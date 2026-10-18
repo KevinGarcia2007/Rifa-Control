@@ -183,6 +183,11 @@ function renderKPIs() {
   );
 
   document.getElementById("kpiAyudas").textContent = dinero(kpis.ayudas);
+
+  document.getElementById("kpiTotalGeneral").textContent = dinero(
+    kpis.totalRecaudado + kpis.dineroPendiente
+  );
+
 }
 
 function buscarBoleta(numero) {
