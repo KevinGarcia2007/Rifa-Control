@@ -2,43 +2,31 @@ let datosPublicos = null;
 let datosAdmin = null;
 let esAdmin = false;
 
-const TELEFONO_RIFA =
-  "3163237616";
+const TELEFONO_RIFA = "3163237616";
+
+const PAGINA_RIFA =
+  "https://rifa-control.onrender.com/";
 
 const gridNumeros =
-  document.getElementById(
-    "gridNumeros"
-  );
+  document.getElementById("gridNumeros");
 
 const panelAdmin =
-  document.getElementById(
-    "panelAdmin"
-  );
+  document.getElementById("panelAdmin");
 
 const modalLogin =
-  document.getElementById(
-    "modalLogin"
-  );
+  document.getElementById("modalLogin");
 
 const tablaRegistros =
-  document.getElementById(
-    "tablaRegistros"
-  );
+  document.getElementById("tablaRegistros");
 
 const numero1 =
-  document.getElementById(
-    "numero1"
-  );
+  document.getElementById("numero1");
 
 const numero2 =
-  document.getElementById(
-    "numero2"
-  );
+  document.getElementById("numero2");
 
 const oferta =
-  document.getElementById(
-    "oferta"
-  );
+  document.getElementById("oferta");
 
 const contenedorNumero2 =
   document.getElementById(
@@ -1260,6 +1248,10 @@ window.editarComprador =
     }
   };
 
+// ==========================================
+// WHATSAPP COMPRADOR
+// ==========================================
+
 window.contactarComprador =
   function(id) {
     const comprador =
@@ -1288,12 +1280,22 @@ window.contactarComprador =
       );
 
     const mensaje =
-      encodeURIComponent(
-        `Hola ${comprador.nombre}, te escribo por la rifa. Tienes registrado el/los número(s) ${numeros}.`
-      );
+`Hola ${comprador.nombre} 👋
+
+Gracias por participar en nuestra rifa.
+
+🎟️ Tu número registrado es: ${numeros}
+
+Puedes hacer seguimiento a la rifa, consultar los números disponibles y ver el resultado cuando se publique en el siguiente enlace:
+
+🌐 ${PAGINA_RIFA}
+
+Muchas gracias por participar. 🍀`;
 
     window.open(
-      `https://wa.me/${telefono}?text=${mensaje}`,
+      `https://wa.me/${telefono}?text=${encodeURIComponent(
+        mensaje
+      )}`,
       "_blank"
     );
   };
@@ -1814,6 +1816,10 @@ Has sido el ganador de nuestra Gran Rifa con el número ${numero}.
 
 Muchas gracias por participar y nuevamente te felicitamos por haber ganado.
 
+Puedes consultar el resultado de la rifa aquí:
+
+🌐 ${PAGINA_RIFA}
+
 Responde este mensaje o escríbenos al ${TELEFONO_RIFA} para coordinar la entrega de tu premio.`;
 }
 
@@ -1948,7 +1954,7 @@ document
   );
 
 // ==========================================
-// NOTIFICAR POR WHATSAPP
+// NOTIFICAR GANADOR POR WHATSAPP
 // ==========================================
 
 document
@@ -2050,8 +2056,6 @@ ${telefonoIngresado}
       }
 
       try {
-        // Primero dejamos guardado
-        // el número ganador seleccionado.
         await api(
           "/api/admin/resultado",
           {
