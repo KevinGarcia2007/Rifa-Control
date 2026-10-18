@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Gran Rifa
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+</head>
+
+<body>
+
+<header class="header">
+
+  <div class="header-contenido">
+
+    <div>
+
+      <span class="mini-titulo">
+        GRAN RIFA
+      </span>
+
+      <h1>
+        🎟️ RifaControl
+      </h1>
+
+      <p>
+        Consulta números disponibles y toda la información del sorteo.
+      </p>
+
+    </div>
+
+    <button
+      id="btnAdministrar"
+      class="btn-admin"
+      type="button"
+    >
+      🔐 Administrar
+    </button>
+
+  </div>
+
+</header>
+
+<main>
+
+<section class="info-sorteo">
+
+  <div>
+
+    <span class="etiqueta">
+      PREMIO
+    </span>
+
+    <h2 id="tituloPremio">
+      Premio de $350.000
+    </h2>
+
+    <p>
+      Juega con los últimos dos dígitos
+      del Premio Mayor de la Lotería de Boyacá.
+    </p>
+
+  </div>
+
+  <div class="fecha-sorteo">
+
+    <span>
+      SORTEO
+    </span>
+
+    <strong id="fechaSorteo">
+      31 de octubre de 2026
+    </strong>
+
+    <small id="detalleSorteo">
+      Lotería de Boyacá
+    </small>
+
+  </div>
+
+  <div class="precios">
+
+    <div>
+
+      <small>
+        Número
+      </small>
+
+      <strong id="precioNormal">
+        $15.000
+      </strong>
+
+    </div>
+
+    <div>
+
+      <small>
+        Promoción
+      </small>
+
+      <strong id="precioOferta">
+        2 x $20.000
+      </strong>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="resultado-sorteo">
+
+  <div>
+
+    <span class="etiqueta">
+      RESULTADO
+    </span>
+
+    <h2>
+      Resultado de la rifa
+    </h2>
+
+    <p id="estadoResultado">
+      El sorteo todavía no se ha realizado.
+    </p>
+
+  </div>
+
+  <div
+    id="numeroGanador"
+    class="numero-ganador oculto"
+  >
+    --
+  </div>
+
+</section>
+
+<section class="kpis">
+
+  <div class="kpi">
+
+    <span>
+      💰 Total recaudado
+    </span>
+
+    <strong id="kpiTotal">
+      $0
+    </strong>
+
+  </div>
+
+  <div class="kpi">
+
+    <span>
+      ⏳ Faltan por pagar
+    </span>
+
+    <strong id="kpiPendientes">
+      0
+    </strong>
+
+  </div>
+
+  <div class="kpi">
+
+    <span>
+      ✅ Boletas pagas
+    </span>
+
+    <strong id="kpiPagadas">
+      0
+    </strong>
+
+  </div>
+
+  <div class="kpi">
+
+    <span>
+      🎟️ Boletas vendidas
+    </span>
+
+    <strong id="kpiVendidas">
+      0
+    </strong>
+
+  </div>
+
+  <div class="kpi">
+
+    <span>
+      📭 Por vender
+    </span>
+
+    <strong id="kpiDisponibles">
+      100
+    </strong>
+
+  </div>
+
+  <div class="kpi">
+
+    <span>
+      💵 Dinero pendiente
+    </span>
+
+    <strong id="kpiDineroPendiente">
+      $0
+    </strong>
+
+  </div>
+
+  <div class="kpi">
+
+    <span>
+      ❤️ Ayudas
+    </span>
+
+    <strong id="kpiAyudas">
+      $0
+    </strong>
+
+  </div>
+
+</section>
+
+<section class="card">
+
+  <div class="titulo-seccion">
+
+    <div>
+
+      <span class="etiqueta">
+        DISPONIBILIDAD
+      </span>
+
+      <h2>
+        Números de la rifa
+      </h2>
+
+    </div>
+
+    <div class="leyenda">
+
+      <span>
+        <i class="estado disponible"></i>
+        Disponible
+      </span>
+
+      <span>
+        <i class="estado pendiente"></i>
+        Vendido
+      </span>
+
+      <span>
+        <i class="estado pagado"></i>
+        Pagado
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="rifa-visual">
+
+    <div class="rifa-encabezado">
+
+      <h2>
+        GRAN
+        <br>
+        RIFA!
+      </h2>
+
+      <h3 id="premioPlantilla">
+        Premio de $350.000
+      </h3>
+
+    </div>
+
+    <div
+      id="gridNumeros"
+      class="grid-numeros"
+    >
+    </div>
+
+    <div class="rifa-informacion">
+
+      <p>
+        Juega con los últimos dos dígitos
+        del Premio Mayor de la
+        <strong>
+          Lotería de Boyacá.
+        </strong>
+      </p>
+
+      <p id="textoFechaPlantilla">
+        Sorteo: 31 de octubre de 2026.
+      </p>
+
+      <p>
+        Valor:
+        <strong id="valorPlantilla">
+          $15.000
+        </strong>
+      </p>
+
+      <p>
+        Promoción:
+        <strong id="ofertaPlantilla">
+          2 números por $20.000
+        </strong>
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section
+  id="panelAdmin"
+  class="oculto"
+>
+
+  <section class="admin-cabecera">
+
+    <div>
+
+      <span class="etiqueta">
+        ADMINISTRACIÓN
+      </span>
+
+      <h2>
+        Panel de encargados
+      </h2>
+
+    </div>
+
+    <button
+      id="btnCerrarSesion"
+      class="btn-secundario"
+      type="button"
+    >
+      Cerrar sesión
+    </button>
+
+  </section>
+
+  <section class="card">
+
+    <div class="titulo-seccion">
+
+      <div>
+
+        <span class="etiqueta">
+          VENTA
+        </span>
+
+        <h2>
+          Registrar comprador
+        </h2>
+
+      </div>
+
+    </div>
+
+    <form id="formRifa">
+
+      <div class="form-grid">
+
+        <div>
+
+          <label for="nombre">
+            Nombre
+          </label>
+
+          <input
+            id="nombre"
+            type="text"
+            required
+          >
+
+        </div>
+
+        <div>
+
+          <label for="telefono">
+            Teléfono / WhatsApp
+          </label>
+
+          <input
+            id="telefono"
+            type="tel"
+            required
+          >
+
+        </div>
+
+        <div>
+
+          <label for="numero1">
+            Número
+          </label>
+
+          <select
+            id="numero1"
+            required
+          >
+          </select>
+
+        </div>
+
+        <div
+          id="contenedorNumero2"
+          class="oculto"
+        >
+
+          <label for="numero2">
+            Segundo número
+          </label>
+
+          <select id="numero2">
+          </select>
+
+        </div>
+
+        <div>
+
+          <label for="observacion">
+            Observación
+          </label>
+
+          <input
+            id="observacion"
+            type="text"
+            placeholder="Opcional"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="opciones">
+
+        <label class="opcion">
+
+          <input
+            id="oferta"
+            type="checkbox"
+          >
+
+          <span>
+            🔥 Oferta 2 x $20.000
+          </span>
+
+        </label>
+
+        <label class="opcion">
+
+          <input
+            id="pagado"
+            type="checkbox"
+          >
+
+          <span>
+            ✅ Pago recibido
+          </span>
+
+        </label>
+
+      </div>
+
+      <div class="resumen-registro">
+
+        <span>
+          Valor
+        </span>
+
+        <strong id="valorRegistro">
+          $15.000
+        </strong>
+
+      </div>
+
+      <button
+        class="btn-principal"
+        type="submit"
+      >
+        Registrar número
+      </button>
+
+    </form>
+
+  </section>
+
+  <section class="card ayuda-card">
+
+    <div>
+
+      <span class="etiqueta">
+        AYUDAS
+      </span>
+
+      <h2>
+        Sumar una ayuda
+      </h2>
+
+      <p>
+        Si alguien aporta dinero sin comprar
+        un número, escribe solamente el valor.
+      </p>
+
+    </div>
+
+    <form
+      id="formAyuda"
+      class="form-ayuda"
+    >
+
+      <input
+        id="valorAyuda"
+        type="number"
+        min="1"
+        placeholder="Ej: 10000"
+        required
+      >
+
+      <button
+        class="btn-principal"
+        type="submit"
+      >
+        + Sumar ayuda
+      </button>
+
+    </form>
+
+  </section>
+
+  <section
+    id="ganadorAdmin"
+    class="card ganador oculto"
+  >
+  </section>
+
+  <section class="card">
+
+    <div class="titulo-seccion">
+
+      <div>
+
+        <span class="etiqueta">
+          COMPRADORES
+        </span>
+
+        <h2>
+          Registros
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div class="tabla-scroll">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Número(s)
+            </th>
+
+            <th>
+              Nombre
+            </th>
+
+            <th>
+              Teléfono
+            </th>
+
+            <th>
+              Valor
+            </th>
+
+            <th>
+              Pago
+            </th>
+
+            <th>
+              Acciones
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="tablaRegistros">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+  <section class="card">
+
+    <div class="titulo-seccion">
+
+      <div>
+
+        <span class="etiqueta">
+          HISTORIAL
+        </span>
+
+        <h2>
+          Ayudas registradas
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div
+      id="listaAyudas"
+      class="lista-ayudas"
+    >
+    </div>
+
+  </section>
+
+  <section class="card">
+
+    <span class="etiqueta">
+      RESPALDO
+    </span>
+
+    <h2>
+      Registrar resultado manualmente
+    </h2>
+
+    <p class="texto-suave">
+      Úsalo únicamente si el resultado automático
+      no puede consultarse.
+    </p>
+
+    <form
+      id="formResultado"
+      class="form-resultado"
+    >
+
+      <input
+        id="resultadoManual"
+        type="text"
+        inputmode="numeric"
+        maxlength="4"
+        placeholder="Ej: 5480 o 80"
+        required
+      >
+
+      <button
+        class="btn-principal"
+        type="submit"
+      >
+        Guardar resultado
+      </button>
+
+    </form>
+
+  </section>
+
+</section>
+
+</main>
+
+<div
+  id="modalLogin"
+  class="modal oculto"
+>
+
+  <div class="modal-contenido login-box">
+
+    <button
+      id="cerrarLogin"
+      class="cerrar-modal"
+      type="button"
+    >
+      ×
+    </button>
+
+    <span class="etiqueta">
+      ACCESO RESTRINGIDO
+    </span>
+
+    <h2>
+      Administrar rifa
+    </h2>
+
+    <p>
+      Ingresa las credenciales de los encargados.
+    </p>
+
+    <form id="formLogin">
+
+      <label for="loginUsuario">
+        Usuario
+      </label>
+
+      <input
+        id="loginUsuario"
+        type="text"
+        autocomplete="username"
+        required
+      >
+
+      <label for="loginPassword">
+        Contraseña
+      </label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button
+        class="btn-principal login-boton"
+        type="submit"
+      >
+        Iniciar sesión
+      </button>
+
+    </form>
+
+    <p
+      id="loginError"
+      class="error-login"
+    >
+    </p>
+
+  </div>
+
+</div>
+
+<div
+  id="modalNumero"
+  class="modal oculto"
+>
+
+  <div class="modal-contenido">
+
+    <button
+      id="cerrarNumero"
+      class="cerrar-modal"
+      type="button"
+    >
+      ×
+    </button>
+
+    <div id="contenidoNumero">
+    </div>
+
+  </div>
+
+</div>
+<div
+  id="modalConfirmarGanador"
+  class="modal oculto"
+>
+  <div class="modal-contenido modal-ganador-confirmacion">
+
+    <button
+      id="cerrarConfirmarGanador"
+      class="cerrar-modal"
+      type="button"
+    >
+      ×
+    </button>
+
+    <span class="etiqueta">
+      🏆 CONFIRMAR GANADOR
+    </span>
+
+    <h2>
+      Revisa los datos antes de notificar
+    </h2>
+
+    <p class="texto-suave">
+      Verifica muy bien el número, nombre y teléfono.
+      El mensaje no se enviará hasta que abras WhatsApp
+      y confirmes manualmente.
+    </p>
+
+    <div class="alerta-confirmacion">
+      ⚠️ No notifiques al ganador hasta estar completamente
+      seguro de que el resultado es correcto.
+    </div>
+
+    <div class="campo-confirmacion">
+
+      <label for="selectorGanador">
+        Número ganador
+      </label>
+
+      <select id="selectorGanador">
+      </select>
+
+    </div>
+
+    <div class="campo-confirmacion">
+
+      <label>
+        Nombre del ganador
+      </label>
+
+      <input
+        id="nombreGanadorConfirmacion"
+        type="text"
+        readonly
+      >
+
+    </div>
+
+    <div class="campo-confirmacion">
+
+      <label>
+        Teléfono para notificación
+      </label>
+
+      <input
+        id="telefonoGanadorConfirmacion"
+        type="tel"
+      >
+
+    </div>
+
+    <div class="campo-confirmacion">
+
+      <label>
+        Premio
+      </label>
+
+      <input
+        id="premioGanadorConfirmacion"
+        type="text"
+        readonly
+      >
+
+    </div>
+
+    <div class="campo-confirmacion">
+
+      <label for="mensajeGanadorConfirmacion">
+        Mensaje de WhatsApp
+      </label>
+
+      <textarea
+        id="mensajeGanadorConfirmacion"
+        rows="8"
+      ></textarea>
+
+    </div>
+
+    <div class="confirmacion-final">
+
+      <label class="opcion">
+
+        <input
+          id="checkConfirmarGanador"
+          type="checkbox"
+        >
+
+        <span>
+          Confirmo que revisé el número, nombre y teléfono del ganador.
+        </span>
+
+      </label>
+
+    </div>
+
+    <div class="botones-confirmacion">
+
+      <button
+        id="btnGuardarGanador"
+        class="btn-secundario"
+        type="button"
+      >
+        Guardar ganador
+      </button>
+
+      <button
+        id="btnNotificarGanador"
+        class="btn-principal"
+        type="button"
+      >
+        📲 Confirmar y abrir WhatsApp
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<script src="app.js"></script>
+
+</body>
+
+</html>
