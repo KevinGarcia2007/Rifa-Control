@@ -4,153 +4,95 @@ let esAdmin = false;
 
 const TELEFONO_RIFA = "3163237616";
 
-const PAGINA_RIFA =
-  "https://rifa-control.onrender.com/";
+const PAGINA_RIFA = "https://rifa-control.onrender.com/";
 
-const gridNumeros =
-  document.getElementById("gridNumeros");
+const gridNumeros = document.getElementById("gridNumeros");
 
-const panelAdmin =
-  document.getElementById("panelAdmin");
+const panelAdmin = document.getElementById("panelAdmin");
 
-const modalLogin =
-  document.getElementById("modalLogin");
+const modalLogin = document.getElementById("modalLogin");
 
-const tablaRegistros =
-  document.getElementById("tablaRegistros");
+const tablaRegistros = document.getElementById("tablaRegistros");
 
-const numero1 =
-  document.getElementById("numero1");
+const numero1 = document.getElementById("numero1");
 
-const numero2 =
-  document.getElementById("numero2");
+const numero2 = document.getElementById("numero2");
 
-const oferta =
-  document.getElementById("oferta");
+const oferta = document.getElementById("oferta");
 
-const contenedorNumero2 =
-  document.getElementById(
-    "contenedorNumero2"
-  );
+const contenedorNumero2 = document.getElementById("contenedorNumero2");
 
-const valorRegistro =
-  document.getElementById(
-    "valorRegistro"
-  );
+const valorRegistro = document.getElementById("valorRegistro");
 
-const modalConfirmarGanador =
-  document.getElementById(
-    "modalConfirmarGanador"
-  );
+const modalConfirmarGanador = document.getElementById("modalConfirmarGanador");
 
-const selectorGanador =
-  document.getElementById(
-    "selectorGanador"
-  );
+const selectorGanador = document.getElementById("selectorGanador");
 
-const nombreGanadorConfirmacion =
-  document.getElementById(
-    "nombreGanadorConfirmacion"
-  );
+const nombreGanadorConfirmacion = document.getElementById(
+  "nombreGanadorConfirmacion",
+);
 
-const telefonoGanadorConfirmacion =
-  document.getElementById(
-    "telefonoGanadorConfirmacion"
-  );
+const telefonoGanadorConfirmacion = document.getElementById(
+  "telefonoGanadorConfirmacion",
+);
 
-const premioGanadorConfirmacion =
-  document.getElementById(
-    "premioGanadorConfirmacion"
-  );
+const premioGanadorConfirmacion = document.getElementById(
+  "premioGanadorConfirmacion",
+);
 
-const mensajeGanadorConfirmacion =
-  document.getElementById(
-    "mensajeGanadorConfirmacion"
-  );
+const mensajeGanadorConfirmacion = document.getElementById(
+  "mensajeGanadorConfirmacion",
+);
 
-const checkConfirmarGanador =
-  document.getElementById(
-    "checkConfirmarGanador"
-  );
+const checkConfirmarGanador = document.getElementById("checkConfirmarGanador");
 
 // ==========================================
 // UTILIDADES
 // ==========================================
 
 function dinero(valor) {
-  return new Intl.NumberFormat(
-    "es-CO",
-    {
-      style: "currency",
-      currency: "COP",
-      maximumFractionDigits: 0
-    }
-  ).format(
-    Number(valor || 0)
-  );
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(Number(valor || 0));
 }
 
 function formatearNumero(numero) {
-  return String(numero)
-    .padStart(2, "0");
+  return String(numero).padStart(2, "0");
 }
 
-function telefonoWhatsApp(
-  telefono
-) {
-  let limpio =
-    String(
-      telefono || ""
-    )
-      .replace(
-        /\D/g,
-        ""
-      );
+function telefonoWhatsApp(telefono) {
+  let limpio = String(telefono || "").replace(/\D/g, "");
 
-  if (
-    limpio.length === 10
-  ) {
-    limpio =
-      "57" + limpio;
+  if (limpio.length === 10) {
+    limpio = "57" + limpio;
   }
 
   return limpio;
 }
 
-async function api(
-  url,
-  opciones = {}
-) {
-  const respuesta =
-    await fetch(
-      url,
-      {
-        ...opciones,
+async function api(url, opciones = {}) {
+  const respuesta = await fetch(url, {
+    ...opciones,
 
-        headers: {
-          "Content-Type":
-            "application/json",
+    headers: {
+      "Content-Type": "application/json",
 
-          ...(opciones.headers ||
-            {})
-        }
-      }
-    );
+      ...(opciones.headers || {}),
+    },
+  });
 
   let datos = {};
 
   try {
-    datos =
-      await respuesta.json();
+    datos = await respuesta.json();
   } catch {
     datos = {};
   }
 
   if (!respuesta.ok) {
-    throw new Error(
-      datos.error ||
-      "Ocurrió un error."
-    );
+    throw new Error(datos.error || "Ocurrió un error.");
   }
 
   return datos;
@@ -162,10 +104,7 @@ async function api(
 
 async function cargarPublico() {
   try {
-    datosPublicos =
-      await api(
-        "/api/publico"
-      );
+    datosPublicos = await api("/api/publico");
 
     renderInformacion();
     renderKPIs();
@@ -174,9 +113,7 @@ async function cargarPublico() {
   } catch (error) {
     console.error(error);
 
-    alert(
-      "No fue posible cargar la rifa."
-    );
+    alert("No fue posible cargar la rifa.");
   }
 }
 
@@ -185,214 +122,109 @@ function renderInformacion() {
     return;
   }
 
-  const rifa =
-    datosPublicos.rifa;
+  const rifa = datosPublicos.rifa;
 
-  document.getElementById(
-    "tituloPremio"
-  ).textContent =
-    `Premio de ${dinero(
-      rifa.premio
-    )}`;
+  document.getElementById("tituloPremio").textContent = `Premio de ${dinero(
+    rifa.premio,
+  )}`;
 
-  document.getElementById(
-    "premioPlantilla"
-  ).textContent =
-    `Premio de ${dinero(
-      rifa.premio
-    )}`;
+  document.getElementById("premioPlantilla").textContent = `Premio de ${dinero(
+    rifa.premio,
+  )}`;
 
-  document.getElementById(
-    "precioNormal"
-  ).textContent =
-    dinero(
-      rifa.valor_numero
-    );
+  document.getElementById("precioNormal").textContent = dinero(
+    rifa.valor_numero,
+  );
 
-  document.getElementById(
-    "precioOferta"
-  ).textContent =
-    `2 x ${dinero(
-      rifa.valor_oferta
-    )}`;
+  document.getElementById("precioOferta").textContent = `2 x ${dinero(
+    rifa.valor_oferta,
+  )}`;
 
-  document.getElementById(
-    "valorPlantilla"
-  ).textContent =
-    dinero(
-      rifa.valor_numero
-    );
+  document.getElementById("valorPlantilla").textContent = dinero(
+    rifa.valor_numero,
+  );
 
-  document.getElementById(
-    "ofertaPlantilla"
-  ).textContent =
-    `2 números por ${dinero(
-      rifa.valor_oferta
-    )}`;
+  document.getElementById("ofertaPlantilla").textContent =
+    `2 números por ${dinero(rifa.valor_oferta)}`;
 
-  const fecha =
-    new Date(
-      rifa.fecha_sorteo
-    );
+  const fecha = new Date(rifa.fecha_sorteo);
 
-  const fechaTexto =
-    fecha.toLocaleDateString(
-      "es-CO",
-      {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        timeZone:
-          "America/Bogota"
-      }
-    );
+  const fechaTexto = fecha.toLocaleDateString("es-CO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "America/Bogota",
+  });
 
-  document.getElementById(
-    "fechaSorteo"
-  ).textContent =
-    fechaTexto;
+  document.getElementById("fechaSorteo").textContent = fechaTexto;
 
-  document.getElementById(
-    "detalleSorteo"
-  ).textContent =
+  document.getElementById("detalleSorteo").textContent =
     `${rifa.loteria} · Sorteo #${rifa.numero_sorteo}`;
 
-  document.getElementById(
-    "textoFechaPlantilla"
-  ).innerHTML =
+  document.getElementById("textoFechaPlantilla").innerHTML =
     `Sorteo: <strong>${fechaTexto}</strong>.`;
 }
 
 function renderKPIs() {
-  const kpis =
-    datosPublicos.kpis;
+  const kpis = datosPublicos.kpis;
 
-  document.getElementById(
-    "kpiTotal"
-  ).textContent =
-    dinero(
-      kpis.totalRecaudado
-    );
+  document.getElementById("kpiTotal").textContent = dinero(kpis.totalRecaudado);
 
-  document.getElementById(
-    "kpiPendientes"
-  ).textContent =
-    kpis.pendientes;
+  document.getElementById("kpiPendientes").textContent = kpis.pendientes;
 
-  document.getElementById(
-    "kpiPagadas"
-  ).textContent =
-    kpis.pagadas;
+  document.getElementById("kpiPagadas").textContent = kpis.pagadas;
 
-  document.getElementById(
-    "kpiVendidas"
-  ).textContent =
-    kpis.vendidas;
+  document.getElementById("kpiVendidas").textContent = kpis.vendidas;
 
-  document.getElementById(
-    "kpiDisponibles"
-  ).textContent =
-    kpis.disponibles;
+  document.getElementById("kpiDisponibles").textContent = kpis.disponibles;
 
-  document.getElementById(
-    "kpiDineroPendiente"
-  ).textContent =
-    dinero(
-      kpis.dineroPendiente
-    );
+  document.getElementById("kpiDineroPendiente").textContent = dinero(
+    kpis.dineroPendiente,
+  );
 
-  document.getElementById(
-    "kpiAyudas"
-  ).textContent =
-    dinero(
-      kpis.ayudas
-    );
+  document.getElementById("kpiAyudas").textContent = dinero(kpis.ayudas);
 }
 
 function buscarBoleta(numero) {
   return (
-    datosPublicos
-      ?.boletas
-      ?.find(
-        boleta =>
-          boleta.numero ===
-          numero
-      ) ||
-    null
+    datosPublicos?.boletas?.find((boleta) => boleta.numero === numero) || null
   );
 }
 
 function renderTablero() {
-  gridNumeros.innerHTML =
-    "";
+  gridNumeros.innerHTML = "";
 
-  for (
-    let i = 0;
-    i < 100;
-    i++
-  ) {
-    const numero =
-      formatearNumero(i);
+  for (let i = 0; i < 100; i++) {
+    const numero = formatearNumero(i);
 
-    const boleta =
-      buscarBoleta(numero);
+    const boleta = buscarBoleta(numero);
 
-    const celda =
-      document.createElement(
-        "div"
-      );
+    const celda = document.createElement("div");
 
-    celda.className =
-      "numero-celda";
+    celda.className = "numero-celda";
 
     if (boleta) {
-      celda.classList.add(
-        boleta.pagado
-          ? "pagado"
-          : "pendiente"
-      );
+      celda.classList.add(boleta.pagado ? "pagado" : "pendiente");
     }
 
-    const texto =
-      document.createElement(
-        "span"
-      );
+    const texto = document.createElement("span");
 
-    texto.className =
-      "numero-texto";
+    texto.className = "numero-texto";
 
-    texto.textContent =
-      numero;
+    texto.textContent = numero;
 
-    celda.appendChild(
-      texto
-    );
+    celda.appendChild(texto);
 
-    celda.addEventListener(
-      "click",
-      () => {
-        abrirNumero(
-          numero,
-          boleta
-        );
-      }
-    );
+    celda.addEventListener("click", () => {
+      abrirNumero(numero, boleta);
+    });
 
-    gridNumeros
-      .appendChild(
-        celda
-      );
+    gridNumeros.appendChild(celda);
   }
 }
 
-function abrirNumero(
-  numero,
-  boleta
-) {
-  const contenido =
-    document.getElementById(
-      "contenidoNumero"
-    );
+function abrirNumero(numero, boleta) {
+  const contenido = document.getElementById("contenidoNumero");
 
   if (!boleta) {
     contenido.innerHTML = `
@@ -425,64 +257,35 @@ function abrirNumero(
       <p>
         Estado:
         <strong>
-          ${
-            boleta.pagado
-              ? "Pagado"
-              : "Pendiente"
-          }
+          ${boleta.pagado ? "Pagado" : "Pendiente"}
         </strong>
       </p>
     `;
   }
 
-  document
-    .getElementById(
-      "modalNumero"
-    )
-    .classList
-    .remove(
-      "oculto"
-    );
+  document.getElementById("modalNumero").classList.remove("oculto");
 }
 
 function renderResultado() {
-  const rifa =
-    datosPublicos.rifa;
+  const rifa = datosPublicos.rifa;
 
-  const estado =
-    document.getElementById(
-      "estadoResultado"
-    );
+  const estado = document.getElementById("estadoResultado");
 
-  const numero =
-    document.getElementById(
-      "numeroGanador"
-    );
+  const numero = document.getElementById("numeroGanador");
 
   if (!rifa.numero_ganador) {
-    estado.textContent =
-      "El sorteo todavía no se ha realizado.";
+    estado.textContent = "El sorteo todavía no se ha realizado.";
 
-    numero
-      .classList
-      .add(
-        "oculto"
-      );
+    numero.classList.add("oculto");
 
     return;
   }
 
-  estado.textContent =
-    "Número ganador de la rifa:";
+  estado.textContent = "Número ganador de la rifa:";
 
-  numero.textContent =
-    rifa.numero_ganador;
+  numero.textContent = rifa.numero_ganador;
 
-  numero
-    .classList
-    .remove(
-      "oculto"
-    );
+  numero.classList.remove("oculto");
 }
 
 // ==========================================
@@ -491,13 +294,9 @@ function renderResultado() {
 
 async function comprobarSesion() {
   try {
-    const sesion =
-      await api(
-        "/api/session"
-      );
+    const sesion = await api("/api/session");
 
-    esAdmin =
-      sesion.admin;
+    esAdmin = sesion.admin;
 
     if (esAdmin) {
       await mostrarPanelAdmin();
@@ -508,217 +307,122 @@ async function comprobarSesion() {
 }
 
 document
-  .getElementById(
-    "btnAdministrar"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-      if (esAdmin) {
-        await mostrarPanelAdmin();
+  .getElementById("btnAdministrar")
+  .addEventListener("click", async () => {
+    if (esAdmin) {
+      await mostrarPanelAdmin();
 
-        panelAdmin
-          .scrollIntoView({
-            behavior:
-              "smooth"
-          });
-      } else {
-        modalLogin
-          .classList
-          .remove(
-            "oculto"
-          );
-      }
-    }
-  );
-
-document
-  .getElementById(
-    "formLogin"
-  )
-  .addEventListener(
-    "submit",
-    async event => {
-      event.preventDefault();
-
-      const usuario =
-        document.getElementById(
-          "loginUsuario"
-        ).value;
-
-      const password =
-        document.getElementById(
-          "loginPassword"
-        ).value;
-
-      const loginError =
-        document.getElementById(
-          "loginError"
-        );
-
-      loginError.textContent =
-        "";
-
-      try {
-        await api(
-          "/api/login",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                usuario,
-                password
-              })
-          }
-        );
-
-        esAdmin = true;
-
-        modalLogin
-          .classList
-          .add(
-            "oculto"
-          );
-
-        document
-          .getElementById(
-            "formLogin"
-          )
-          .reset();
-
-        await mostrarPanelAdmin();
-
-        panelAdmin
-          .scrollIntoView({
-            behavior:
-              "smooth"
-          });
-      } catch (error) {
-        loginError.textContent =
-          error.message;
-      }
-    }
-  );
-
-document
-  .getElementById(
-    "cerrarLogin"
-  )
-  .addEventListener(
-    "click",
-    () => {
-      modalLogin
-        .classList
-        .add(
-          "oculto"
-        );
-    }
-  );
-
-document
-  .getElementById(
-    "btnCerrarSesion"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-      try {
-        await api(
-          "/api/logout",
-          {
-            method:
-              "POST"
-          }
-        );
-      } catch (error) {
-        console.error(
-          error
-        );
-      }
-
-      esAdmin = false;
-
-      datosAdmin = null;
-
-      panelAdmin
-        .classList
-        .add(
-          "oculto"
-        );
-
-      window.scrollTo({
-        top: 0,
-        behavior:
-          "smooth"
+      panelAdmin.scrollIntoView({
+        behavior: "smooth",
       });
+    } else {
+      modalLogin.classList.remove("oculto");
     }
-  );
+  });
+
+document
+  .getElementById("formLogin")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const usuario = document.getElementById("loginUsuario").value;
+
+    const password = document.getElementById("loginPassword").value;
+
+    const loginError = document.getElementById("loginError");
+
+    loginError.textContent = "";
+
+    try {
+      await api("/api/login", {
+        method: "POST",
+
+        body: JSON.stringify({
+          usuario,
+          password,
+        }),
+      });
+
+      esAdmin = true;
+
+      modalLogin.classList.add("oculto");
+
+      document.getElementById("formLogin").reset();
+
+      await mostrarPanelAdmin();
+
+      panelAdmin.scrollIntoView({
+        behavior: "smooth",
+      });
+    } catch (error) {
+      loginError.textContent = error.message;
+    }
+  });
+
+document.getElementById("cerrarLogin").addEventListener("click", () => {
+  modalLogin.classList.add("oculto");
+});
+
+document
+  .getElementById("btnCerrarSesion")
+  .addEventListener("click", async () => {
+    try {
+      await api("/api/logout", {
+        method: "POST",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    esAdmin = false;
+
+    datosAdmin = null;
+
+    panelAdmin.classList.add("oculto");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 
 // ==========================================
 // ADMIN
 // ==========================================
 
 async function mostrarPanelAdmin() {
-  panelAdmin
-    .classList
-    .remove(
-      "oculto"
-    );
+  panelAdmin.classList.remove("oculto");
 
   await cargarAdmin();
 }
 
 async function cargarAdmin() {
   try {
-    datosAdmin =
-      await api(
-        "/api/admin/datos"
-      );
+    datosAdmin = await api("/api/admin/datos");
 
     renderSelects();
     renderTablaAdmin();
     renderAyudas();
     renderGanadorAdmin();
   } catch (error) {
-    if (
-      error.message.includes(
-        "iniciar sesión"
-      )
-    ) {
+    if (error.message.includes("iniciar sesión")) {
       esAdmin = false;
 
-      panelAdmin
-        .classList
-        .add(
-          "oculto"
-        );
+      panelAdmin.classList.add("oculto");
 
       return;
     }
 
-    alert(
-      error.message
-    );
+    alert(error.message);
   }
 }
 
 function numerosVendidos() {
-  return (
-    datosPublicos
-      ?.boletas
-      ?.map(
-        boleta =>
-          boleta.numero
-      ) ||
-    []
-  );
+  return datosPublicos?.boletas?.map((boleta) => boleta.numero) || [];
 }
 
 function renderSelects() {
-  const vendidos =
-    numerosVendidos();
+  const vendidos = numerosVendidos();
 
   numero1.innerHTML = `
     <option value="">
@@ -732,245 +436,133 @@ function renderSelects() {
     </option>
   `;
 
-  for (
-    let i = 0;
-    i < 100;
-    i++
-  ) {
-    const numero =
-      formatearNumero(i);
+  for (let i = 0; i < 100; i++) {
+    const numero = formatearNumero(i);
 
-    if (
-      !vendidos.includes(
-        numero
-      )
-    ) {
+    if (!vendidos.includes(numero)) {
       const opcion = `
         <option value="${numero}">
           ${numero}
         </option>
       `;
 
-      numero1.innerHTML +=
-        opcion;
+      numero1.innerHTML += opcion;
 
-      numero2.innerHTML +=
-        opcion;
+      numero2.innerHTML += opcion;
     }
   }
 }
 
-oferta
-  .addEventListener(
-    "change",
-    () => {
-      if (oferta.checked) {
-        contenedorNumero2
-          .classList
-          .remove(
-            "oculto"
-          );
+oferta.addEventListener("change", () => {
+  if (oferta.checked) {
+    contenedorNumero2.classList.remove("oculto");
 
-        numero2.required =
-          true;
+    numero2.required = true;
 
-        valorRegistro.textContent =
-          dinero(
-            20000
-          );
-      } else {
-        contenedorNumero2
-          .classList
-          .add(
-            "oculto"
-          );
+    valorRegistro.textContent = dinero(20000);
+  } else {
+    contenedorNumero2.classList.add("oculto");
 
-        numero2.required =
-          false;
+    numero2.required = false;
 
-        numero2.value =
-          "";
+    numero2.value = "";
 
-        valorRegistro.textContent =
-          dinero(
-            15000
-          );
-      }
-    }
-  );
+    valorRegistro.textContent = dinero(15000);
+  }
+});
 
 document
-  .getElementById(
-    "formRifa"
-  )
-  .addEventListener(
-    "submit",
-    async event => {
-      event.preventDefault();
+  .getElementById("formRifa")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-      const nombre =
-        document.getElementById(
-          "nombre"
-        ).value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
 
-      const telefono =
-        document.getElementById(
-          "telefono"
-        ).value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
 
-      const primerNumero =
-        numero1.value;
+    const primerNumero = numero1.value;
 
-      const segundoNumero =
-        numero2.value;
+    const segundoNumero = numero2.value;
 
-      const observacion =
-        document.getElementById(
-          "observacion"
-        ).value.trim();
+    const observacion = document.getElementById("observacion").value.trim();
 
-      const esOferta =
-        oferta.checked;
+    const esOferta = oferta.checked;
 
-      const pagado =
-        document.getElementById(
-          "pagado"
-        ).checked;
+    const pagado = document.getElementById("pagado").checked;
 
-      if (
-        esOferta &&
-        !segundoNumero
-      ) {
-        alert(
-          "Selecciona el segundo número."
-        );
+    if (esOferta && !segundoNumero) {
+      alert("Selecciona el segundo número.");
 
-        return;
-      }
-
-      if (
-        esOferta &&
-        primerNumero ===
-          segundoNumero
-      ) {
-        alert(
-          "Selecciona dos números diferentes."
-        );
-
-        return;
-      }
-
-      const numeros =
-        esOferta
-          ? [
-              primerNumero,
-              segundoNumero
-            ]
-          : [
-              primerNumero
-            ];
-
-      try {
-        await api(
-          "/api/admin/registro",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                nombre,
-                telefono,
-                numeros,
-                oferta:
-                  esOferta,
-                pagado,
-                observacion
-              })
-          }
-        );
-
-        alert(
-          "Registro guardado correctamente."
-        );
-
-        document
-          .getElementById(
-            "formRifa"
-          )
-          .reset();
-
-        contenedorNumero2
-          .classList
-          .add(
-            "oculto"
-          );
-
-        numero2.required =
-          false;
-
-        valorRegistro.textContent =
-          dinero(
-            15000
-          );
-
-        await recargarTodo();
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
+      return;
     }
-  );
+
+    if (esOferta && primerNumero === segundoNumero) {
+      alert("Selecciona dos números diferentes.");
+
+      return;
+    }
+
+    const numeros = esOferta ? [primerNumero, segundoNumero] : [primerNumero];
+
+    try {
+      await api("/api/admin/registro", {
+        method: "POST",
+
+        body: JSON.stringify({
+          nombre,
+          telefono,
+          numeros,
+          oferta: esOferta,
+          pagado,
+          observacion,
+        }),
+      });
+
+      alert("Registro guardado correctamente.");
+
+      document.getElementById("formRifa").reset();
+
+      contenedorNumero2.classList.add("oculto");
+
+      numero2.required = false;
+
+      valorRegistro.textContent = dinero(15000);
+
+      await recargarTodo();
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
 // ==========================================
 // AYUDAS
 // ==========================================
 
 document
-  .getElementById(
-    "formAyuda"
-  )
-  .addEventListener(
-    "submit",
-    async event => {
-      event.preventDefault();
+  .getElementById("formAyuda")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-      const input =
-        document.getElementById(
-          "valorAyuda"
-        );
+    const input = document.getElementById("valorAyuda");
 
-      const valor =
-        Number(
-          input.value
-        );
+    const valor = Number(input.value);
 
-      try {
-        await api(
-          "/api/admin/ayudas",
-          {
-            method:
-              "POST",
+    try {
+      await api("/api/admin/ayudas", {
+        method: "POST",
 
-            body:
-              JSON.stringify({
-                valor
-              })
-          }
-        );
+        body: JSON.stringify({
+          valor,
+        }),
+      });
 
-        input.value =
-          "";
+      input.value = "";
 
-        await recargarTodo();
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
+      await recargarTodo();
+    } catch (error) {
+      alert(error.message);
     }
-  );
+  });
 
 // ==========================================
 // COMPRADORES
@@ -981,71 +573,36 @@ function compradoresConBoletas() {
     return [];
   }
 
-  return datosAdmin
-    .compradores
-    .map(
-      comprador => {
-        const boletas =
-          datosAdmin
-            .boletas
-            .filter(
-              boleta =>
-                boleta.comprador_id ===
-                comprador.id
-            );
-
-        return {
-          ...comprador,
-          boletas
-        };
-      }
+  return datosAdmin.compradores.map((comprador) => {
+    const boletas = datosAdmin.boletas.filter(
+      (boleta) => boleta.comprador_id === comprador.id,
     );
+
+    return {
+      ...comprador,
+      boletas,
+    };
+  });
 }
 
 function renderTablaAdmin() {
-  tablaRegistros.innerHTML =
-    "";
+  tablaRegistros.innerHTML = "";
 
-  const registros =
-    compradoresConBoletas();
+  const registros = compradoresConBoletas();
 
-  registros.forEach(
-    registro => {
-      const numeros =
-        registro.boletas
-          .map(
-            boleta =>
-              boleta.numero
-          )
-          .join(", ");
+  registros.forEach((registro) => {
+    const numeros = registro.boletas.map((boleta) => boleta.numero).join(", ");
 
-      const valor =
-        registro.boletas
-          .reduce(
-            (
-              total,
-              boleta
-            ) =>
-              total +
-              Number(
-                boleta.valor
-              ),
-            0
-          );
+    const valor = registro.boletas.reduce(
+      (total, boleta) => total + Number(boleta.valor),
+      0,
+    );
 
-      const pagado =
-        registro.boletas
-          .every(
-            boleta =>
-              boleta.pagado
-          );
+    const pagado = registro.boletas.every((boleta) => boleta.pagado);
 
-      const fila =
-        document.createElement(
-          "tr"
-        );
+    const fila = document.createElement("tr");
 
-      fila.innerHTML = `
+    fila.innerHTML = `
         <td>
           <strong>
             ${numeros}
@@ -1067,17 +624,9 @@ function renderTablaAdmin() {
         <td>
           <span class="
             badge
-            ${
-              pagado
-                ? "badge-pagado"
-                : "badge-pendiente"
-            }
+            ${pagado ? "badge-pagado" : "badge-pendiente"}
           ">
-            ${
-              pagado
-                ? "Pagado"
-                : "Pendiente"
-            }
+            ${pagado ? "Pagado" : "Pendiente"}
           </span>
         </td>
 
@@ -1091,11 +640,7 @@ function renderTablaAdmin() {
                 ${!pagado}
               )"
             >
-              ${
-                pagado
-                  ? "Pendiente"
-                  : "Pagar"
-              }
+              ${pagado ? "Pendiente" : "Pagar"}
             </button>
 
             <button
@@ -1129,235 +674,145 @@ function renderTablaAdmin() {
         </td>
       `;
 
-      tablaRegistros
-        .appendChild(
-          fila
-        );
-    }
-  );
+    tablaRegistros.appendChild(fila);
+  });
 }
 
-window.cambiarPago =
-  async function(
-    id,
-    pagado
-  ) {
-    try {
-      await api(
-        `/api/admin/compradores/${id}/pago`,
-        {
-          method:
-            "PATCH",
+window.cambiarPago = async function (id, pagado) {
+  try {
+    await api(`/api/admin/compradores/${id}/pago`, {
+      method: "PATCH",
 
-          body:
-            JSON.stringify({
-              pagado
-            })
-        }
-      );
+      body: JSON.stringify({
+        pagado,
+      }),
+    });
 
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
-  };
+    await recargarTodo();
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
-window.editarComprador =
-  async function(id) {
-    const comprador =
-      datosAdmin
-        .compradores
-        .find(
-          comprador =>
-            comprador.id ===
-            id
-        );
+window.editarComprador = async function (id) {
+  const comprador = datosAdmin.compradores.find(
+    (comprador) => comprador.id === id,
+  );
 
-    if (!comprador) {
-      return;
-    }
+  if (!comprador) {
+    return;
+  }
 
-    const nuevoNombre =
-      prompt(
-        "Nombre:",
-        comprador.nombre
-      );
+  const nuevoNombre = prompt("Nombre:", comprador.nombre);
 
-    if (
-      nuevoNombre ===
-      null
-    ) {
-      return;
-    }
+  if (nuevoNombre === null) {
+    return;
+  }
 
-    const nuevoTelefono =
-      prompt(
-        "Teléfono:",
-        comprador.telefono
-      );
+  const nuevoTelefono = prompt("Teléfono:", comprador.telefono);
 
-    if (
-      nuevoTelefono ===
-      null
-    ) {
-      return;
-    }
+  if (nuevoTelefono === null) {
+    return;
+  }
 
-    const nuevaObservacion =
-      prompt(
-        "Observación:",
-        comprador.observacion ||
-        ""
-      );
+  const nuevaObservacion = prompt("Observación:", comprador.observacion || "");
 
-    if (
-      nuevaObservacion ===
-      null
-    ) {
-      return;
-    }
+  if (nuevaObservacion === null) {
+    return;
+  }
 
-    try {
-      await api(
-        `/api/admin/compradores/${id}`,
-        {
-          method:
-            "PATCH",
+  try {
+    await api(`/api/admin/compradores/${id}`, {
+      method: "PATCH",
 
-          body:
-            JSON.stringify({
-              nombre:
-                nuevoNombre,
+      body: JSON.stringify({
+        nombre: nuevoNombre,
 
-              telefono:
-                nuevoTelefono,
+        telefono: nuevoTelefono,
 
-              observacion:
-                nuevaObservacion
-            })
-        }
-      );
+        observacion: nuevaObservacion,
+      }),
+    });
 
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
-  };
+    await recargarTodo();
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
 // ==========================================
 // WHATSAPP COMPRADOR
 // ==========================================
 
-window.contactarComprador =
-  function(id) {
-    const comprador =
-      compradoresConBoletas()
-        .find(
-          comprador =>
-            comprador.id ===
-            id
-        );
+window.contactarComprador = function (id) {
+  const comprador = compradoresConBoletas().find(
+    (comprador) => comprador.id === id,
+  );
 
-    if (!comprador) {
-      return;
-    }
+  if (!comprador) {
+    return;
+  }
 
-    const numeros =
-      comprador.boletas
-        .map(
-          boleta =>
-            boleta.numero
-        )
-        .join(", ");
+  const numeros = comprador.boletas.map((boleta) => boleta.numero).join(", ");
 
-    const telefono =
-      telefonoWhatsApp(
-        comprador.telefono
-      );
+  const telefono = telefonoWhatsApp(comprador.telefono);
 
-    const mensaje =
-`Hola ${comprador.nombre} 👋
+  const mensaje = `Hola ${comprador.nombre}
 
 Gracias por participar en nuestra rifa.
 
-🎟️ Tu número registrado es: ${numeros}
+Tu número registrado es: ${numeros}
 
 Puedes hacer seguimiento a la rifa, consultar los números disponibles y ver el resultado cuando se publique en el siguiente enlace:
 
-🌐 ${PAGINA_RIFA}
+${PAGINA_RIFA}
 
-Muchas gracias por participar. 🍀`;
+Muchas gracias por participar.`;
 
-    window.open(
-      `https://wa.me/${telefono}?text=${encodeURIComponent(
-        mensaje
-      )}`,
-      "_blank"
-    );
-  };
+  window.open(
+    `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`,
+    "_blank",
+  );
+};
 
-window.eliminarComprador =
-  async function(id) {
-    const comprador =
-      datosAdmin
-        .compradores
-        .find(
-          comprador =>
-            comprador.id ===
-            id
-        );
+window.eliminarComprador = async function (id) {
+  const comprador = datosAdmin.compradores.find(
+    (comprador) => comprador.id === id,
+  );
 
-    if (!comprador) {
-      return;
-    }
+  if (!comprador) {
+    return;
+  }
 
-    const confirmar =
-      confirm(
-        `¿Eliminar a ${comprador.nombre} y liberar sus números?`
-      );
+  const confirmar = confirm(
+    `¿Eliminar a ${comprador.nombre} y liberar sus números?`,
+  );
 
-    if (!confirmar) {
-      return;
-    }
+  if (!confirmar) {
+    return;
+  }
 
-    try {
-      await api(
-        `/api/admin/compradores/${id}`,
-        {
-          method:
-            "DELETE"
-        }
-      );
+  try {
+    await api(`/api/admin/compradores/${id}`, {
+      method: "DELETE",
+    });
 
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
-  };
+    await recargarTodo();
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
 // ==========================================
 // HISTORIAL DE AYUDAS
 // ==========================================
 
 function renderAyudas() {
-  const contenedor =
-    document.getElementById(
-      "listaAyudas"
-    );
+  const contenedor = document.getElementById("listaAyudas");
 
-  contenedor.innerHTML =
-    "";
+  contenedor.innerHTML = "";
 
-  if (
-    datosAdmin.ayudas.length ===
-    0
-  ) {
+  if (datosAdmin.ayudas.length === 0) {
     contenedor.innerHTML = `
       <p class="texto-suave">
         Todavía no hay ayudas registradas.
@@ -1367,32 +822,18 @@ function renderAyudas() {
     return;
   }
 
-  datosAdmin
-    .ayudas
-    .forEach(
-      ayuda => {
-        const item =
-          document.createElement(
-            "div"
-          );
+  datosAdmin.ayudas.forEach((ayuda) => {
+    const item = document.createElement("div");
 
-        item.className =
-          "ayuda-item";
+    item.className = "ayuda-item";
 
-        const fecha =
-          new Date(
-            ayuda.fecha_registro
-          ).toLocaleString(
-            "es-CO"
-          );
+    const fecha = new Date(ayuda.fecha_registro).toLocaleString("es-CO");
 
-        item.innerHTML = `
+    item.innerHTML = `
           <div>
 
             <strong>
-              ${dinero(
-                ayuda.valor
-              )}
+              ${dinero(ayuda.valor)}
             </strong>
 
             <small>
@@ -1411,131 +852,84 @@ function renderAyudas() {
           </button>
         `;
 
-        contenedor
-          .appendChild(
-            item
-          );
-      }
-    );
+    contenedor.appendChild(item);
+  });
 }
 
-window.eliminarAyuda =
-  async function(id) {
-    if (
-      !confirm(
-        "¿Eliminar esta ayuda?"
-      )
-    ) {
-      return;
-    }
+window.eliminarAyuda = async function (id) {
+  if (!confirm("¿Eliminar esta ayuda?")) {
+    return;
+  }
 
-    try {
-      await api(
-        `/api/admin/ayudas/${id}`,
-        {
-          method:
-            "DELETE"
-        }
-      );
+  try {
+    await api(`/api/admin/ayudas/${id}`, {
+      method: "DELETE",
+    });
 
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
-  };
+    await recargarTodo();
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
 // ==========================================
 // RESULTADO MANUAL
 // ==========================================
 
 document
-  .getElementById(
-    "formResultado"
-  )
-  .addEventListener(
-    "submit",
-    async event => {
-      event.preventDefault();
+  .getElementById("formResultado")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-      const input =
-        document.getElementById(
-          "resultadoManual"
-        );
+    const input = document.getElementById("resultadoManual");
 
-      const confirmar =
-        confirm(
-          `¿Seguro que deseas registrar ${input.value} como resultado de la rifa?`
-        );
+    const confirmar = confirm(
+      `¿Seguro que deseas registrar ${input.value} como resultado de la rifa?`,
+    );
 
-      if (!confirmar) {
-        return;
-      }
-
-      try {
-        await api(
-          "/api/admin/resultado",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                numero:
-                  input.value
-              })
-          }
-        );
-
-        input.value =
-          "";
-
-        await recargarTodo();
-
-        alert(
-          "Resultado guardado. Revisa cuidadosamente los datos del ganador antes de notificar."
-        );
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
+    if (!confirmar) {
+      return;
     }
-  );
+
+    try {
+      await api("/api/admin/resultado", {
+        method: "POST",
+
+        body: JSON.stringify({
+          numero: input.value,
+        }),
+      });
+
+      input.value = "";
+
+      await recargarTodo();
+
+      alert(
+        "Resultado guardado. Revisa cuidadosamente los datos del ganador antes de notificar.",
+      );
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
 // ==========================================
 // GANADOR
 // ==========================================
 
-function obtenerCompradorPorNumero(
-  numero
-) {
+function obtenerCompradorPorNumero(numero) {
   if (!datosAdmin) {
     return null;
   }
 
-  const boleta =
-    datosAdmin
-      .boletas
-      .find(
-        boleta =>
-          boleta.numero ===
-          numero
-      );
+  const boleta = datosAdmin.boletas.find((boleta) => boleta.numero === numero);
 
   if (!boleta) {
     return null;
   }
 
-  const comprador =
-    datosAdmin
-      .compradores
-      .find(
-        comprador =>
-          comprador.id ===
-          boleta.comprador_id
-      );
+  const comprador = datosAdmin.compradores.find(
+    (comprador) => comprador.id === boleta.comprador_id,
+  );
 
   if (!comprador) {
     return null;
@@ -1543,35 +937,22 @@ function obtenerCompradorPorNumero(
 
   return {
     comprador,
-    boleta
+    boleta,
   };
 }
 
 function renderGanadorAdmin() {
-  const contenedor =
-    document.getElementById(
-      "ganadorAdmin"
-    );
+  const contenedor = document.getElementById("ganadorAdmin");
 
-  const numero =
-    datosAdmin
-      ?.rifa
-      ?.numero_ganador;
+  const numero = datosAdmin?.rifa?.numero_ganador;
 
   if (!numero) {
-    contenedor
-      .classList
-      .add(
-        "oculto"
-      );
+    contenedor.classList.add("oculto");
 
     return;
   }
 
-  const datosGanador =
-    obtenerCompradorPorNumero(
-      numero
-    );
+  const datosGanador = obtenerCompradorPorNumero(numero);
 
   if (!datosGanador) {
     contenedor.innerHTML = `
@@ -1599,20 +980,12 @@ function renderGanadorAdmin() {
       </div>
     `;
 
-    contenedor
-      .classList
-      .remove(
-        "oculto"
-      );
+    contenedor.classList.remove("oculto");
 
     return;
   }
 
-  const {
-    comprador,
-    boleta
-  } =
-    datosGanador;
+  const { comprador, boleta } = datosGanador;
 
   contenedor.innerHTML = `
     <span class="etiqueta">
@@ -1642,11 +1015,7 @@ function renderGanadorAdmin() {
       <p>
         Estado de la boleta:
         <strong>
-          ${
-            boleta.pagado
-              ? "Pagada"
-              : "Pendiente de pago"
-          }
+          ${boleta.pagado ? "Pagada" : "Pendiente de pago"}
         </strong>
       </p>
 
@@ -1671,148 +1040,86 @@ function renderGanadorAdmin() {
     </div>
   `;
 
-  contenedor
-    .classList
-    .remove(
-      "oculto"
-    );
+  contenedor.classList.remove("oculto");
 }
 
 // ==========================================
 // MODAL CONFIRMACIÓN GANADOR
 // ==========================================
 
-window.abrirConfirmacionGanador =
-  function() {
-    if (!datosAdmin) {
+window.abrirConfirmacionGanador = function () {
+  if (!datosAdmin) {
+    return;
+  }
+
+  selectorGanador.innerHTML = "";
+
+  const boletasOrdenadas = [...datosAdmin.boletas].sort(
+    (a, b) => Number(a.numero) - Number(b.numero),
+  );
+
+  boletasOrdenadas.forEach((boleta) => {
+    const comprador = datosAdmin.compradores.find(
+      (comprador) => comprador.id === boleta.comprador_id,
+    );
+
+    if (!comprador) {
       return;
     }
 
-    selectorGanador.innerHTML =
-      "";
+    const opcion = document.createElement("option");
 
-    const boletasOrdenadas =
-      [...datosAdmin.boletas]
-        .sort(
-          (a, b) =>
-            Number(
-              a.numero
-            ) -
-            Number(
-              b.numero
-            )
-        );
+    opcion.value = boleta.numero;
 
-    boletasOrdenadas
-      .forEach(
-        boleta => {
-          const comprador =
-            datosAdmin
-              .compradores
-              .find(
-                comprador =>
-                  comprador.id ===
-                  boleta.comprador_id
-              );
+    opcion.textContent = `${boleta.numero} — ${comprador.nombre}`;
 
-          if (!comprador) {
-            return;
-          }
+    selectorGanador.appendChild(opcion);
+  });
 
-          const opcion =
-            document.createElement(
-              "option"
-            );
+  const numeroActual = datosAdmin.rifa.numero_ganador;
 
-          opcion.value =
-            boleta.numero;
+  if (
+    numeroActual &&
+    [...selectorGanador.options].some((opcion) => opcion.value === numeroActual)
+  ) {
+    selectorGanador.value = numeroActual;
+  }
 
-          opcion.textContent =
-            `${boleta.numero} — ${comprador.nombre}`;
+  checkConfirmarGanador.checked = false;
 
-          selectorGanador
-            .appendChild(
-              opcion
-            );
-        }
-      );
+  actualizarDatosConfirmacionGanador();
 
-    const numeroActual =
-      datosAdmin
-        .rifa
-        .numero_ganador;
-
-    if (
-      numeroActual &&
-      [...selectorGanador.options]
-        .some(
-          opcion =>
-            opcion.value ===
-            numeroActual
-        )
-    ) {
-      selectorGanador.value =
-        numeroActual;
-    }
-
-    checkConfirmarGanador.checked =
-      false;
-
-    actualizarDatosConfirmacionGanador();
-
-    modalConfirmarGanador
-      .classList
-      .remove(
-        "oculto"
-      );
-  };
+  modalConfirmarGanador.classList.remove("oculto");
+};
 
 function actualizarDatosConfirmacionGanador() {
-  const numero =
-    selectorGanador.value;
+  const numero = selectorGanador.value;
 
-  const datosGanador =
-    obtenerCompradorPorNumero(
-      numero
-    );
+  const datosGanador = obtenerCompradorPorNumero(numero);
 
   if (!datosGanador) {
-    nombreGanadorConfirmacion.value =
-      "";
+    nombreGanadorConfirmacion.value = "";
 
-    telefonoGanadorConfirmacion.value =
-      "";
+    telefonoGanadorConfirmacion.value = "";
 
-    mensajeGanadorConfirmacion.value =
-      "";
+    mensajeGanadorConfirmacion.value = "";
 
     return;
   }
 
-  const {
-    comprador
-  } =
-    datosGanador;
+  const { comprador } = datosGanador;
 
-  nombreGanadorConfirmacion.value =
-    comprador.nombre;
+  nombreGanadorConfirmacion.value = comprador.nombre;
 
-  telefonoGanadorConfirmacion.value =
-    comprador.telefono;
+  telefonoGanadorConfirmacion.value = comprador.telefono;
 
-  premioGanadorConfirmacion.value =
-    dinero(
-      datosAdmin.rifa.premio
-    );
+  premioGanadorConfirmacion.value = dinero(datosAdmin.rifa.premio);
 
-  mensajeGanadorConfirmacion.value =
-`🎉 ¡Felicitaciones, ${comprador.nombre}!
+  mensajeGanadorConfirmacion.value = `🎉 ¡Felicitaciones, ${comprador.nombre}!
 
 Has sido el ganador de nuestra Gran Rifa con el número ${numero}.
 
-🏆 Tu premio es de ${dinero(
-  datosAdmin.rifa.premio
-)}.
+🏆 Tu premio es de ${dinero(datosAdmin.rifa.premio)}.
 
 Muchas gracias por participar y nuevamente te felicitamos por haber ganado.
 
@@ -1823,222 +1130,133 @@ Puedes consultar el resultado de la rifa aquí:
 Responde este mensaje o escríbenos al ${TELEFONO_RIFA} para coordinar la entrega de tu premio.`;
 }
 
-selectorGanador
-  .addEventListener(
-    "change",
-    () => {
-      checkConfirmarGanador.checked =
-        false;
+selectorGanador.addEventListener("change", () => {
+  checkConfirmarGanador.checked = false;
 
-      actualizarDatosConfirmacionGanador();
-    }
-  );
+  actualizarDatosConfirmacionGanador();
+});
 
 document
-  .getElementById(
-    "cerrarConfirmarGanador"
-  )
-  .addEventListener(
-    "click",
-    () => {
-      modalConfirmarGanador
-        .classList
-        .add(
-          "oculto"
-        );
-    }
-  );
+  .getElementById("cerrarConfirmarGanador")
+  .addEventListener("click", () => {
+    modalConfirmarGanador.classList.add("oculto");
+  });
 
-modalConfirmarGanador
-  .addEventListener(
-    "click",
-    event => {
-      if (
-        event.target ===
-        modalConfirmarGanador
-      ) {
-        modalConfirmarGanador
-          .classList
-          .add(
-            "oculto"
-          );
-      }
-    }
-  );
+modalConfirmarGanador.addEventListener("click", (event) => {
+  if (event.target === modalConfirmarGanador) {
+    modalConfirmarGanador.classList.add("oculto");
+  }
+});
 
 // ==========================================
 // GUARDAR GANADOR
 // ==========================================
 
 document
-  .getElementById(
-    "btnGuardarGanador"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-      const numero =
-        selectorGanador.value;
+  .getElementById("btnGuardarGanador")
+  .addEventListener("click", async () => {
+    const numero = selectorGanador.value;
 
-      if (!numero) {
-        alert(
-          "Selecciona un número ganador."
-        );
+    if (!numero) {
+      alert("Selecciona un número ganador.");
 
-        return;
-      }
-
-      if (
-        !checkConfirmarGanador.checked
-      ) {
-        alert(
-          "Debes confirmar que revisaste los datos del ganador."
-        );
-
-        return;
-      }
-
-      const datosGanador =
-        obtenerCompradorPorNumero(
-          numero
-        );
-
-      if (!datosGanador) {
-        alert(
-          "El número seleccionado no pertenece a ningún comprador."
-        );
-
-        return;
-      }
-
-      const confirmar =
-        confirm(
-          `Vas a guardar el número ${numero} como ganador.\n\nGanador: ${datosGanador.comprador.nombre}\nTeléfono: ${telefonoGanadorConfirmacion.value}\n\n¿Confirmas que los datos son correctos?`
-        );
-
-      if (!confirmar) {
-        return;
-      }
-
-      try {
-        await api(
-          "/api/admin/resultado",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                numero
-              })
-          }
-        );
-
-        await recargarTodo();
-
-        modalConfirmarGanador
-          .classList
-          .add(
-            "oculto"
-          );
-
-        alert(
-          "Ganador confirmado correctamente."
-        );
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
+      return;
     }
-  );
+
+    if (!checkConfirmarGanador.checked) {
+      alert("Debes confirmar que revisaste los datos del ganador.");
+
+      return;
+    }
+
+    const datosGanador = obtenerCompradorPorNumero(numero);
+
+    if (!datosGanador) {
+      alert("El número seleccionado no pertenece a ningún comprador.");
+
+      return;
+    }
+
+    const confirmar = confirm(
+      `Vas a guardar el número ${numero} como ganador.\n\nGanador: ${datosGanador.comprador.nombre}\nTeléfono: ${telefonoGanadorConfirmacion.value}\n\n¿Confirmas que los datos son correctos?`,
+    );
+
+    if (!confirmar) {
+      return;
+    }
+
+    try {
+      await api("/api/admin/resultado", {
+        method: "POST",
+
+        body: JSON.stringify({
+          numero,
+        }),
+      });
+
+      await recargarTodo();
+
+      modalConfirmarGanador.classList.add("oculto");
+
+      alert("Ganador confirmado correctamente.");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
 // ==========================================
 // NOTIFICAR GANADOR POR WHATSAPP
 // ==========================================
 
 document
-  .getElementById(
-    "btnNotificarGanador"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-      const numero =
-        selectorGanador.value;
+  .getElementById("btnNotificarGanador")
+  .addEventListener("click", async () => {
+    const numero = selectorGanador.value;
 
-      const datosGanador =
-        obtenerCompradorPorNumero(
-          numero
-        );
+    const datosGanador = obtenerCompradorPorNumero(numero);
 
-      if (!datosGanador) {
-        alert(
-          "No se encontró un comprador asociado al número seleccionado."
-        );
+    if (!datosGanador) {
+      alert("No se encontró un comprador asociado al número seleccionado.");
 
-        return;
-      }
+      return;
+    }
 
-      const nombre =
-        datosGanador
-          .comprador
-          .nombre;
+    const nombre = datosGanador.comprador.nombre;
 
-      const telefonoIngresado =
-        telefonoGanadorConfirmacion
-          .value
-          .trim();
+    const telefonoIngresado = telefonoGanadorConfirmacion.value.trim();
 
-      if (!telefonoIngresado) {
-        alert(
-          "Revisa el teléfono del ganador."
-        );
+    if (!telefonoIngresado) {
+      alert("Revisa el teléfono del ganador.");
 
-        return;
-      }
+      return;
+    }
 
-      if (
-        !checkConfirmarGanador.checked
-      ) {
-        alert(
-          "Debes marcar la casilla confirmando que revisaste los datos."
-        );
+    if (!checkConfirmarGanador.checked) {
+      alert("Debes marcar la casilla confirmando que revisaste los datos.");
 
-        return;
-      }
+      return;
+    }
 
-      const telefono =
-        telefonoWhatsApp(
-          telefonoIngresado
-        );
+    const telefono = telefonoWhatsApp(telefonoIngresado);
 
-      if (
-        telefono.length < 10
-      ) {
-        alert(
-          "El número de teléfono parece incorrecto. Revísalo antes de continuar."
-        );
+    if (telefono.length < 10) {
+      alert(
+        "El número de teléfono parece incorrecto. Revísalo antes de continuar.",
+      );
 
-        return;
-      }
+      return;
+    }
 
-      const mensaje =
-        mensajeGanadorConfirmacion
-          .value
-          .trim();
+    const mensaje = mensajeGanadorConfirmacion.value.trim();
 
-      if (!mensaje) {
-        alert(
-          "El mensaje está vacío."
-        );
+    if (!mensaje) {
+      alert("El mensaje está vacío.");
 
-        return;
-      }
+      return;
+    }
 
-      const confirmar =
-        confirm(
-`ÚLTIMA CONFIRMACIÓN
+    const confirmar = confirm(
+      `ÚLTIMA CONFIRMACIÓN
 
 Número ganador: ${numero}
 
@@ -2048,51 +1266,35 @@ ${nombre}
 WhatsApp:
 ${telefonoIngresado}
 
-¿Estás completamente seguro de que deseas abrir WhatsApp para notificar a esta persona?`
-        );
+¿Estás completamente seguro de que deseas abrir WhatsApp para notificar a esta persona?`,
+    );
 
-      if (!confirmar) {
-        return;
-      }
-
-      try {
-        await api(
-          "/api/admin/resultado",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                numero
-              })
-          }
-        );
-
-        await recargarTodo();
-
-        const url =
-          `https://wa.me/${telefono}?text=${encodeURIComponent(
-            mensaje
-          )}`;
-
-        window.open(
-          url,
-          "_blank"
-        );
-
-        modalConfirmarGanador
-          .classList
-          .add(
-            "oculto"
-          );
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
+    if (!confirmar) {
+      return;
     }
-  );
+
+    try {
+      await api("/api/admin/resultado", {
+        method: "POST",
+
+        body: JSON.stringify({
+          numero,
+        }),
+      });
+
+      await recargarTodo();
+
+      const url = `https://wa.me/${telefono}?text=${encodeURIComponent(
+        mensaje,
+      )}`;
+
+      window.open(url, "_blank");
+
+      modalConfirmarGanador.classList.add("oculto");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
 // ==========================================
 // RECARGAR
@@ -2110,60 +1312,21 @@ async function recargarTodo() {
 // MODALES
 // ==========================================
 
-document
-  .getElementById(
-    "cerrarNumero"
-  )
-  .addEventListener(
-    "click",
-    () => {
-      document
-        .getElementById(
-          "modalNumero"
-        )
-        .classList
-        .add(
-          "oculto"
-        );
-    }
-  );
+document.getElementById("cerrarNumero").addEventListener("click", () => {
+  document.getElementById("modalNumero").classList.add("oculto");
+});
 
-modalLogin
-  .addEventListener(
-    "click",
-    event => {
-      if (
-        event.target ===
-        modalLogin
-      ) {
-        modalLogin
-          .classList
-          .add(
-            "oculto"
-          );
-      }
-    }
-  );
+modalLogin.addEventListener("click", (event) => {
+  if (event.target === modalLogin) {
+    modalLogin.classList.add("oculto");
+  }
+});
 
-document
-  .getElementById(
-    "modalNumero"
-  )
-  .addEventListener(
-    "click",
-    event => {
-      if (
-        event.target.id ===
-        "modalNumero"
-      ) {
-        event.currentTarget
-          .classList
-          .add(
-            "oculto"
-          );
-      }
-    }
-  );
+document.getElementById("modalNumero").addEventListener("click", (event) => {
+  if (event.target.id === "modalNumero") {
+    event.currentTarget.classList.add("oculto");
+  }
+});
 
 // ==========================================
 // INICIAR
@@ -2176,7 +1339,4 @@ async function iniciar() {
 
 iniciar();
 
-setInterval(
-  cargarPublico,
-  60 * 1000
-);
+setInterval(cargarPublico, 60 * 1000);
