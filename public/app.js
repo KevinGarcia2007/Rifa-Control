@@ -1762,6 +1762,7 @@ document
   .addEventListener(
     "click",
     () => {
+
       const seleccionados =
         colaMasiva.filter(
           item =>
@@ -1793,12 +1794,11 @@ document
         confirm(
 `ÚLTIMA CONFIRMACIÓN
 
-Vas a abrir ${seleccionados.length} conversaciones de WhatsApp.
+Vas a preparar ${seleccionados.length} conversaciones de WhatsApp.
 
 Tipo:
 ${
-  tipoMasivoActual ===
-  "pendientes"
+  tipoMasivoActual === "pendientes"
     ? "Pendientes por pagar"
     : "Compradores pagados"
 }
@@ -1810,12 +1810,42 @@ ${
         return;
       }
 
+      /*
+       * IMPORTANTE:
+       * Creamos primero TODAS las pestañas vacías
+       * directamente desde el clic.
+       *
+       * Esto reduce el bloqueo de ventanas emergentes.
+       */
+
+      const ventanas = [];
+
+      for (
+        let i = 0;
+        i < seleccionados.length;
+        i++
+      ) {
+        const ventana =
+          window.open(
+            "about:blank",
+            "_blank"
+          );
+
+        ventanas.push(
+          ventana
+        );
+      }
+
       let abiertas = 0;
       let bloqueadas = 0;
       let invalidas = 0;
 
       seleccionados.forEach(
-        item => {
+        (
+          item,
+          indice
+        ) => {
+
           const telefono =
             telefonoWhatsApp(
               item
@@ -1823,31 +1853,42 @@ ${
                 .telefono
             );
 
+          const ventana =
+            ventanas[
+              indice
+            ];
+
           if (
             !telefono ||
             telefono.length <
               10
           ) {
             invalidas++;
+
+            if (ventana) {
+              ventana.close();
+            }
+
             return;
           }
 
+          if (!ventana) {
+            bloqueadas++;
+            return;
+          }
+
+          const mensaje =
+            item.mensaje;
+
           const url =
             `https://wa.me/${telefono}?text=${encodeURIComponent(
-              item.mensaje
+              mensaje
             )}`;
 
-          const ventana =
-            window.open(
-              url,
-              "_blank"
-            );
+          ventana.location.href =
+            url;
 
-          if (ventana) {
-            abiertas++;
-          } else {
-            bloqueadas++;
-          }
+          abiertas++;
         }
       );
 
@@ -1856,25 +1897,28 @@ ${
         0
       ) {
         alert(
-`Se intentaron abrir los mensajes.
+`Chrome bloqueó algunas ventanas.
 
-Abiertos: ${abiertas}
-Bloqueados por el navegador: ${bloqueadas}
+Preparadas correctamente: ${abiertas}
+
+Bloqueadas: ${bloqueadas}
+
 Teléfonos inválidos: ${invalidas}
 
-Permite las ventanas emergentes de esta página y vuelve a intentarlo para los que falten.`
+Debes permitir las ventanas emergentes para esta página y volver a intentarlo.`
         );
       } else {
         alert(
 `Listo.
 
-Se abrieron ${abiertas} conversaciones de WhatsApp.
+Se prepararon ${abiertas} conversaciones de WhatsApp.
 
 Teléfonos inválidos: ${invalidas}
 
-Ahora solo debes revisar cada pestaña y pulsar Enviar en WhatsApp.`
+Ahora ve pasando por las pestañas y pulsa Enviar en cada conversación.`
         );
       }
+
     }
   );
 
