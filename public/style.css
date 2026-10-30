@@ -36,8 +36,7 @@ body {
 
   color: white;
 
-  padding:
-    27px 6%;
+  padding: 27px 6%;
 }
 
 .header-contenido {
@@ -75,6 +74,11 @@ button {
   font-family: inherit;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-admin {
   border:
     1px solid
@@ -107,11 +111,7 @@ button {
 
 .btn-admin:hover {
   background: white;
-
-  color:
-    var(
-      --principal-oscuro
-    );
+  color: var(--principal-oscuro);
 }
 
 .btn-principal {
@@ -132,11 +132,9 @@ button {
   cursor: pointer;
 }
 
-.btn-principal:hover {
+.btn-principal:hover:not(:disabled) {
   background:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 }
 
 .btn-secundario {
@@ -148,9 +146,7 @@ button {
     white;
 
   color:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 
   padding:
     10px 15px;
@@ -211,11 +207,22 @@ main {
 
 .texto-suave {
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   margin-top: 6px;
+
+  line-height: 1.5;
+}
+
+.texto-ayuda {
+  display: block;
+
+  color:
+    var(--texto-suave);
+
+  margin-top: 6px;
+
+  line-height: 1.4;
 }
 
 .info-sorteo {
@@ -250,9 +257,7 @@ main {
 
 .info-sorteo h2 {
   color:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 
   font-size: 29px;
 
@@ -261,9 +266,7 @@ main {
 
 .info-sorteo p {
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   line-height: 1.55;
 }
@@ -283,13 +286,10 @@ main {
 }
 
 .fecha-sorteo strong {
-  margin:
-    5px 0;
+  margin: 5px 0;
 
   color:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 }
 
 .precios {
@@ -319,9 +319,7 @@ main {
 
 .precios small {
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   margin-bottom: 4px;
 }
@@ -364,9 +362,7 @@ main {
   background: white;
 
   color:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 
   font-size: 42px;
   font-weight: 900;
@@ -409,9 +405,7 @@ main {
 
 .kpi span {
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   font-size: 13px;
 }
@@ -420,9 +414,7 @@ main {
   display: block;
 
   color:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 
   font-size: 23px;
 
@@ -461,16 +453,12 @@ main {
 
 .estado.pendiente {
   background:
-    var(
-      --amarillo
-    );
+    var(--amarillo);
 }
 
 .estado.pagado {
   background:
-    var(
-      --verde
-    );
+    var(--verde);
 }
 
 .rifa-visual {
@@ -724,7 +712,8 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
 
   padding: 11px;
@@ -738,16 +727,26 @@ select {
   font-size: 14px;
 
   background: white;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+textarea {
+  resize: vertical;
+
+  line-height: 1.5;
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
   outline: none;
 
   border-color:
-    var(
-      --principal
-    );
+    var(--principal);
 
   box-shadow:
     0 0 0 3px
@@ -791,9 +790,7 @@ select:focus {
   justify-content: space-between;
 
   background:
-    var(
-      --crema
-    );
+    var(--crema);
 
   max-width: 360px;
 
@@ -801,15 +798,14 @@ select:focus {
     13px 16px;
 
   margin-top: 20px;
+  margin-bottom: 17px;
 
   border-radius: 9px;
 }
 
 .resumen-registro strong {
   color:
-    var(
-      --principal-oscuro
-    );
+    var(--principal-oscuro);
 
   font-size: 19px;
 }
@@ -828,9 +824,7 @@ select:focus {
 
 .ayuda-card p {
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   margin-top: 5px;
 }
@@ -849,6 +843,14 @@ select:focus {
   margin: 0;
 
   white-space: nowrap;
+}
+
+.acciones-masivas {
+  display: flex;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
 }
 
 .tabla-scroll {
@@ -879,9 +881,7 @@ th {
   background: #fcfaf9;
 
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 }
 
 .badge {
@@ -973,9 +973,7 @@ th {
 
   border:
     1px solid
-    var(
-      --borde
-    );
+    var(--borde);
 
   border-radius: 8px;
 
@@ -987,9 +985,7 @@ th {
   display: block;
 
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   margin-top: 3px;
 }
@@ -1000,6 +996,44 @@ th {
   border:
     2px solid
     #e2b547;
+}
+
+.ganador-datos {
+  margin-top: 14px;
+
+  padding: 14px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
+}
+
+.ganador-datos p {
+  margin-bottom: 6px;
+}
+
+.ganador-acciones {
+  display: flex;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+  margin-top: 17px;
+}
+
+.btn-notificar {
+  background: #239a55;
+}
+
+.btn-notificar:hover {
+  background: #18793f;
 }
 
 .modal {
@@ -1030,6 +1064,10 @@ th {
 
   max-width: 430px;
 
+  max-height: 92vh;
+
+  overflow-y: auto;
+
   background: white;
 
   border-radius: 15px;
@@ -1045,9 +1083,7 @@ th {
 
 .login-box p {
   color:
-    var(
-      --texto-suave
-    );
+    var(--texto-suave);
 
   margin-bottom: 20px;
 }
@@ -1085,6 +1121,132 @@ th {
   margin-bottom: 0 !important;
 
   font-size: 13px;
+}
+
+.modal-ganador-confirmacion {
+  max-width: 560px;
+}
+
+.alerta-confirmacion {
+  margin: 18px 0;
+
+  padding: 13px 15px;
+
+  background: #fff4d6;
+
+  border:
+    1px solid
+    #e3bd55;
+
+  color: #715300;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+
+  line-height: 1.45;
+}
+
+.campo-confirmacion {
+  margin-top: 15px;
+}
+
+.confirmacion-final {
+  margin-top: 20px;
+
+  padding: 13px;
+
+  border-radius: 8px;
+
+  background: #fcfaf9;
+
+  border:
+    1px solid
+    var(--borde);
+}
+
+.botones-confirmacion {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+/* ========================================= */
+/* MENSAJES MASIVOS */
+/* ========================================= */
+
+.modal-masivo {
+  max-width: 650px;
+}
+
+.datos-masivo {
+  margin: 18px 0;
+
+  padding: 15px;
+
+  background: #fcfaf9;
+
+  border:
+    1px solid
+    var(--borde);
+
+  border-radius: 9px;
+}
+
+.datos-masivo p {
+  margin-bottom: 7px;
+
+  line-height: 1.4;
+}
+
+.datos-masivo p:last-child {
+  margin-bottom: 0;
+}
+
+.dato-pendiente {
+  color: #8d6200;
+}
+
+.dato-pagado {
+  color: #207447;
+}
+
+.confirmacion-masivo {
+  margin-top: 15px;
+
+  padding: 13px;
+
+  border:
+    1px solid
+    var(--borde);
+
+  border-radius: 8px;
+
+  background: #fcfaf9;
+}
+
+.botones-masivos {
+  display: grid;
+
+  grid-template-columns:
+    auto
+    1fr
+    auto;
+
+  gap: 10px;
+
+  align-items: center;
+
+  margin-top: 18px;
+}
+
+.botones-masivos
+.btn-principal {
+  width: 100%;
 }
 
 .oculto {
@@ -1181,6 +1343,19 @@ th {
     font-size: 14px;
   }
 
+  .botones-confirmacion {
+    flex-direction: column;
+  }
+
+  .botones-confirmacion button {
+    width: 100%;
+  }
+
+  .botones-masivos {
+    grid-template-columns:
+      1fr;
+  }
+
 }
 
 @media (
@@ -1203,135 +1378,5 @@ th {
   .numero-celda {
     font-size: 11px;
   }
-.modal-ganador-confirmacion {
-  max-width: 560px;
-  max-height: 92vh;
-  overflow-y: auto;
-}
 
-.alerta-confirmacion {
-  margin: 18px 0;
-
-  padding: 13px 15px;
-
-  background: #fff4d6;
-
-  border: 1px solid #e3bd55;
-
-  color: #715300;
-
-  border-radius: 8px;
-
-  font-size: 13px;
-
-  line-height: 1.45;
-}
-
-.campo-confirmacion {
-  margin-top: 15px;
-}
-
-.campo-confirmacion textarea {
-  width: 100%;
-
-  padding: 12px;
-
-  resize: vertical;
-
-  border: 1px solid #ddcfca;
-
-  border-radius: 8px;
-
-  font-family: Arial, Helvetica, sans-serif;
-
-  font-size: 14px;
-
-  line-height: 1.5;
-}
-
-.campo-confirmacion textarea:focus {
-  outline: none;
-
-  border-color: var(--principal);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(
-      169,
-      101,
-      80,
-      0.1
-    );
-}
-
-.confirmacion-final {
-  margin-top: 20px;
-
-  padding: 13px;
-
-  border-radius: 8px;
-
-  background: #fcfaf9;
-
-  border: 1px solid var(--borde);
-}
-
-.botones-confirmacion {
-  display: flex;
-
-  justify-content: flex-end;
-
-  gap: 10px;
-
-  margin-top: 20px;
-}
-
-.ganador-datos {
-  margin-top: 14px;
-
-  padding: 14px;
-
-  border-radius: 9px;
-
-  background: rgba(
-    255,
-    255,
-    255,
-    0.7
-  );
-}
-
-.ganador-datos p {
-  margin-bottom: 6px;
-}
-
-.ganador-acciones {
-  display: flex;
-
-  gap: 10px;
-
-  flex-wrap: wrap;
-
-  margin-top: 17px;
-}
-
-.btn-notificar {
-  background: #239a55;
-}
-
-.btn-notificar:hover {
-  background: #18793f;
-}
-
-@media (max-width: 600px) {
-
-  .botones-confirmacion {
-    flex-direction: column;
-  }
-
-  .botones-confirmacion button {
-    width: 100%;
-  }
-
-}
 }
