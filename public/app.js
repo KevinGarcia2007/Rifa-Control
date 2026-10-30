@@ -104,7 +104,7 @@ const checkConfirmarGanador =
     "checkConfirmarGanador"
   );
 
-// MENSAJES MASIVOS
+// MASIVO
 
 const modalMasivo =
   document.getElementById(
@@ -116,43 +116,33 @@ const tituloMasivo =
     "tituloMasivo"
   );
 
-const progresoMasivo =
+const resumenMasivo =
   document.getElementById(
-    "progresoMasivo"
+    "resumenMasivo"
   );
 
-const datosMasivo =
+const listaMensajesMasivos =
   document.getElementById(
-    "datosMasivo"
+    "listaMensajesMasivos"
   );
 
-const mensajeMasivo =
+const resumenSeleccionados =
   document.getElementById(
-    "mensajeMasivo"
+    "resumenSeleccionados"
   );
 
-const checkMensajeRevisado =
+const checkMensajesRevisados =
   document.getElementById(
-    "checkMensajeRevisado"
+    "checkMensajesRevisados"
   );
 
-const btnAbrirWhatsAppMasivo =
+const textoConfirmacionMasivo =
   document.getElementById(
-    "btnAbrirWhatsAppMasivo"
-  );
-
-const btnSiguienteMasivo =
-  document.getElementById(
-    "btnSiguienteMasivo"
-  );
-
-const btnAnteriorMasivo =
-  document.getElementById(
-    "btnAnteriorMasivo"
+    "textoConfirmacionMasivo"
   );
 
 let colaMasiva = [];
-let indiceMasivo = 0;
+let tipoMasivoActual = "";
 
 // ==========================================
 // UTILIDADES
@@ -189,7 +179,8 @@ function telefonoWhatsApp(
       );
 
   if (
-    limpio.length === 10
+    limpio.length ===
+    10
   ) {
     limpio =
       "57" + limpio;
@@ -238,7 +229,7 @@ async function api(
 }
 
 // ==========================================
-// INFORMACIÓN PÚBLICA
+// PÚBLICO
 // ==========================================
 
 async function cargarPublico() {
@@ -254,10 +245,6 @@ async function cargarPublico() {
     renderResultado();
   } catch (error) {
     console.error(error);
-
-    alert(
-      "No fue posible cargar la rifa."
-    );
   }
 }
 
@@ -390,7 +377,9 @@ function renderKPIs() {
     );
 }
 
-function buscarBoleta(numero) {
+function buscarBoleta(
+  numero
+) {
   return (
     datosPublicos
       ?.boletas
@@ -404,7 +393,8 @@ function buscarBoleta(numero) {
 }
 
 function renderTablero() {
-  gridNumeros.innerHTML = "";
+  gridNumeros.innerHTML =
+    "";
 
   for (
     let i = 0;
@@ -433,20 +423,11 @@ function renderTablero() {
       );
     }
 
-    const texto =
-      document.createElement(
-        "span"
-      );
-
-    texto.className =
-      "numero-texto";
-
-    texto.textContent =
-      numero;
-
-    celda.appendChild(
-      texto
-    );
+    celda.innerHTML = `
+      <span class="numero-texto">
+        ${numero}
+      </span>
+    `;
 
     celda.addEventListener(
       "click",
@@ -479,9 +460,7 @@ function abrirNumero(
         NÚMERO
       </span>
 
-      <h2>
-        ${numero}
-      </h2>
+      <h2>${numero}</h2>
 
       <p>
         Este número está disponible.
@@ -493,9 +472,7 @@ function abrirNumero(
         NÚMERO
       </span>
 
-      <h2>
-        ${numero}
-      </h2>
+      <h2>${numero}</h2>
 
       <p>
         Este número ya fue vendido.
@@ -538,7 +515,9 @@ function renderResultado() {
       "numeroGanador"
     );
 
-  if (!rifa.numero_ganador) {
+  if (
+    !rifa.numero_ganador
+  ) {
     estado.textContent =
       "El sorteo todavía no se ha realizado.";
 
@@ -565,7 +544,7 @@ function renderResultado() {
 }
 
 // ==========================================
-// SESIÓN
+// LOGIN
 // ==========================================
 
 async function comprobarSesion() {
@@ -621,14 +600,18 @@ document
       event.preventDefault();
 
       const usuario =
-        document.getElementById(
-          "loginUsuario"
-        ).value;
+        document
+          .getElementById(
+            "loginUsuario"
+          )
+          .value;
 
       const password =
-        document.getElementById(
-          "loginPassword"
-        ).value;
+        document
+          .getElementById(
+            "loginPassword"
+          )
+          .value;
 
       const loginError =
         document.getElementById(
@@ -642,7 +625,8 @@ document
         await api(
           "/api/login",
           {
-            method: "POST",
+            method:
+              "POST",
 
             body:
               JSON.stringify({
@@ -667,12 +651,6 @@ document
           .reset();
 
         await mostrarPanelAdmin();
-
-        panelAdmin
-          .scrollIntoView({
-            behavior:
-              "smooth"
-          });
       } catch (error) {
         loginError.textContent =
           error.message;
@@ -702,18 +680,13 @@ document
   .addEventListener(
     "click",
     async () => {
-      try {
-        await api(
-          "/api/logout",
-          {
-            method: "POST"
-          }
-        );
-      } catch (error) {
-        console.error(
-          error
-        );
-      }
+      await api(
+        "/api/logout",
+        {
+          method:
+            "POST"
+        }
+      );
 
       esAdmin = false;
       datosAdmin = null;
@@ -723,12 +696,6 @@ document
         .add(
           "oculto"
         );
-
-      window.scrollTo({
-        top: 0,
-        behavior:
-          "smooth"
-      });
     }
   );
 
@@ -758,25 +725,7 @@ async function cargarAdmin() {
     renderAyudas();
     renderGanadorAdmin();
   } catch (error) {
-    if (
-      error.message.includes(
-        "iniciar sesión"
-      )
-    ) {
-      esAdmin = false;
-
-      panelAdmin
-        .classList
-        .add(
-          "oculto"
-        );
-
-      return;
-    }
-
-    alert(
-      error.message
-    );
+    console.error(error);
   }
 }
 
@@ -796,17 +745,11 @@ function renderSelects() {
   const vendidos =
     numerosVendidos();
 
-  numero1.innerHTML = `
-    <option value="">
-      Seleccionar
-    </option>
-  `;
+  numero1.innerHTML =
+    `<option value="">Seleccionar</option>`;
 
-  numero2.innerHTML = `
-    <option value="">
-      Seleccionar
-    </option>
-  `;
+  numero2.innerHTML =
+    `<option value="">Seleccionar</option>`;
 
   for (
     let i = 0;
@@ -821,11 +764,8 @@ function renderSelects() {
         numero
       )
     ) {
-      const opcion = `
-        <option value="${numero}">
-          ${numero}
-        </option>
-      `;
+      const opcion =
+        `<option value="${numero}">${numero}</option>`;
 
       numero1.innerHTML +=
         opcion;
@@ -836,44 +776,49 @@ function renderSelects() {
   }
 }
 
-oferta
-  .addEventListener(
-    "change",
-    () => {
-      if (oferta.checked) {
-        contenedorNumero2
-          .classList
-          .remove(
-            "oculto"
-          );
+oferta.addEventListener(
+  "change",
+  () => {
+    if (
+      oferta.checked
+    ) {
+      contenedorNumero2
+        .classList
+        .remove(
+          "oculto"
+        );
 
-        numero2.required =
-          true;
+      numero2.required =
+        true;
 
-        valorRegistro.textContent =
-          dinero(
-            20000
-          );
-      } else {
-        contenedorNumero2
-          .classList
-          .add(
-            "oculto"
-          );
+      valorRegistro.textContent =
+        dinero(
+          20000
+        );
+    } else {
+      contenedorNumero2
+        .classList
+        .add(
+          "oculto"
+        );
 
-        numero2.required =
-          false;
+      numero2.required =
+        false;
 
-        numero2.value =
-          "";
+      numero2.value =
+        "";
 
-        valorRegistro.textContent =
-          dinero(
-            15000
-          );
-      }
+      valorRegistro.textContent =
+        dinero(
+          15000
+        );
     }
-  );
+  }
+);
+
+// ==========================================
+// REGISTRAR
+// ==========================================
 
 document
   .getElementById(
@@ -900,12 +845,6 @@ document
           .value
           .trim();
 
-      const primerNumero =
-        numero1.value;
-
-      const segundoNumero =
-        numero2.value;
-
       const observacion =
         document
           .getElementById(
@@ -913,6 +852,12 @@ document
           )
           .value
           .trim();
+
+      const primerNumero =
+        numero1.value;
+
+      const segundoNumero =
+        numero2.value;
 
       const esOferta =
         oferta.checked;
@@ -926,22 +871,11 @@ document
 
       if (
         esOferta &&
-        !segundoNumero
-      ) {
-        alert(
-          "Selecciona el segundo número."
-        );
-
-        return;
-      }
-
-      if (
-        esOferta &&
         primerNumero ===
           segundoNumero
       ) {
         alert(
-          "Selecciona dos números diferentes."
+          "Selecciona números diferentes."
         );
 
         return;
@@ -993,14 +927,6 @@ document
             "oculto"
           );
 
-        numero2.required =
-          false;
-
-        valorRegistro.textContent =
-          dinero(
-            15000
-          );
-
         await recargarTodo();
       } catch (error) {
         alert(
@@ -1028,11 +954,6 @@ document
           "valorAyuda"
         );
 
-      const valor =
-        Number(
-          input.value
-        );
-
       try {
         await api(
           "/api/admin/ayudas",
@@ -1042,7 +963,10 @@ document
 
             body:
               JSON.stringify({
-                valor
+                valor:
+                  Number(
+                    input.value
+                  )
               })
           }
         );
@@ -1071,8 +995,10 @@ function compradoresConBoletas() {
   return datosAdmin
     .compradores
     .map(
-      comprador => {
-        const boletas =
+      comprador => ({
+        ...comprador,
+
+        boletas:
           datosAdmin
             .boletas
             .filter(
@@ -1083,13 +1009,8 @@ function compradoresConBoletas() {
                 String(
                   comprador.id
                 )
-            );
-
-        return {
-          ...comprador,
-          boletas
-        };
-      }
+            )
+      })
     );
 }
 
@@ -1097,137 +1018,129 @@ function renderTablaAdmin() {
   tablaRegistros.innerHTML =
     "";
 
-  const registros =
-    compradoresConBoletas();
+  compradoresConBoletas()
+    .forEach(
+      registro => {
+        const numeros =
+          registro.boletas
+            .map(
+              boleta =>
+                boleta.numero
+            )
+            .join(", ");
 
-  registros.forEach(
-    registro => {
-      const numeros =
-        registro.boletas
-          .map(
-            boleta =>
-              boleta.numero
-          )
-          .join(", ");
+        const valor =
+          registro.boletas
+            .reduce(
+              (
+                total,
+                boleta
+              ) =>
+                total +
+                Number(
+                  boleta.valor
+                ),
+              0
+            );
 
-      const valor =
-        registro.boletas
-          .reduce(
-            (
-              total,
-              boleta
-            ) =>
-              total +
-              Number(
-                boleta.valor
-              ),
-            0
+        const pagado =
+          registro.boletas
+            .length >
+              0 &&
+          registro.boletas
+            .every(
+              boleta =>
+                boleta.pagado
+            );
+
+        const fila =
+          document.createElement(
+            "tr"
           );
 
-      const pagado =
-        registro.boletas
-          .length > 0 &&
-        registro.boletas
-          .every(
-            boleta =>
-              boleta.pagado
-          );
+        fila.innerHTML = `
+          <td>
+            <strong>
+              ${numeros}
+            </strong>
+          </td>
 
-      const fila =
-        document.createElement(
-          "tr"
-        );
+          <td>
+            ${registro.nombre}
+          </td>
 
-      fila.innerHTML = `
-        <td>
-          <strong>
-            ${numeros}
-          </strong>
-        </td>
+          <td>
+            ${registro.telefono}
+          </td>
 
-        <td>
-          ${registro.nombre}
-        </td>
+          <td>
+            ${dinero(valor)}
+          </td>
 
-        <td>
-          ${registro.telefono}
-        </td>
-
-        <td>
-          ${dinero(valor)}
-        </td>
-
-        <td>
-          <span class="
-            badge
-            ${
-              pagado
-                ? "badge-pagado"
-                : "badge-pendiente"
-            }
-          ">
-            ${
-              pagado
-                ? "Pagado"
-                : "Pendiente"
-            }
-          </span>
-        </td>
-
-        <td>
-          <div class="acciones">
-
-            <button
-              class="btn-tabla btn-pagar"
-              onclick="cambiarPago(
-                ${registro.id},
-                ${!pagado}
-              )"
-            >
+          <td>
+            <span class="
+              badge
               ${
                 pagado
-                  ? "Pendiente"
-                  : "Pagar"
+                  ? "badge-pagado"
+                  : "badge-pendiente"
               }
-            </button>
+            ">
+              ${
+                pagado
+                  ? "Pagado"
+                  : "Pendiente"
+              }
+            </span>
+          </td>
 
-            <button
-              class="btn-tabla btn-editar"
-              onclick="editarComprador(
-                ${registro.id}
-              )"
-            >
-              Editar
-            </button>
+          <td>
 
-            <button
-              class="btn-tabla btn-whatsapp"
-              onclick="contactarComprador(
-                ${registro.id}
-              )"
-            >
-              WhatsApp
-            </button>
+            <div class="acciones">
 
-            <button
-              class="btn-tabla btn-eliminar"
-              onclick="eliminarComprador(
-                ${registro.id}
-              )"
-            >
-              Eliminar
-            </button>
+              <button
+                class="btn-tabla btn-pagar"
+                onclick="cambiarPago(${registro.id},${!pagado})"
+              >
+                ${
+                  pagado
+                    ? "Pendiente"
+                    : "Pagar"
+                }
+              </button>
 
-          </div>
-        </td>
-      `;
+              <button
+                class="btn-tabla btn-editar"
+                onclick="editarComprador(${registro.id})"
+              >
+                Editar
+              </button>
 
-      tablaRegistros
-        .appendChild(
-          fila
-        );
-    }
-  );
+              <button
+                class="btn-tabla btn-whatsapp"
+                onclick="contactarComprador(${registro.id})"
+              >
+                WhatsApp
+              </button>
+
+              <button
+                class="btn-tabla btn-eliminar"
+                onclick="eliminarComprador(${registro.id})"
+              >
+                Eliminar
+              </button>
+
+            </div>
+
+          </td>
+        `;
+
+        tablaRegistros
+          .appendChild(
+            fila
+          );
+      }
+    );
 }
 
 window.cambiarPago =
@@ -1235,26 +1148,20 @@ window.cambiarPago =
     id,
     pagado
   ) {
-    try {
-      await api(
-        `/api/admin/compradores/${id}/pago`,
-        {
-          method:
-            "PATCH",
+    await api(
+      `/api/admin/compradores/${id}/pago`,
+      {
+        method:
+          "PATCH",
 
-          body:
-            JSON.stringify({
-              pagado
-            })
-        }
-      );
+        body:
+          JSON.stringify({
+            pagado
+          })
+      }
+    );
 
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
+    await recargarTodo();
   };
 
 window.editarComprador =
@@ -1274,33 +1181,33 @@ window.editarComprador =
       return;
     }
 
-    const nuevoNombre =
+    const nombre =
       prompt(
         "Nombre:",
         comprador.nombre
       );
 
     if (
-      nuevoNombre ===
+      nombre ===
       null
     ) {
       return;
     }
 
-    const nuevoTelefono =
+    const telefono =
       prompt(
         "Teléfono:",
         comprador.telefono
       );
 
     if (
-      nuevoTelefono ===
+      telefono ===
       null
     ) {
       return;
     }
 
-    const nuevaObservacion =
+    const observacion =
       prompt(
         "Observación:",
         comprador.observacion ||
@@ -1308,220 +1215,32 @@ window.editarComprador =
       );
 
     if (
-      nuevaObservacion ===
+      observacion ===
       null
     ) {
       return;
     }
 
-    try {
-      await api(
-        `/api/admin/compradores/${id}`,
-        {
-          method:
-            "PATCH",
+    await api(
+      `/api/admin/compradores/${id}`,
+      {
+        method:
+          "PATCH",
 
-          body:
-            JSON.stringify({
-              nombre:
-                nuevoNombre,
-
-              telefono:
-                nuevoTelefono,
-
-              observacion:
-                nuevaObservacion
-            })
-        }
-      );
-
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
-  };
-
-// ==========================================
-// MENSAJE INDIVIDUAL
-// ==========================================
-
-window.contactarComprador =
-  function(id) {
-    const comprador =
-      compradoresConBoletas()
-        .find(
-          comprador =>
-            String(
-              comprador.id
-            ) ===
-            String(id)
-        );
-
-    if (!comprador) {
-      return;
-    }
-
-    const telefono =
-      telefonoWhatsApp(
-        comprador.telefono
-      );
-
-    const boletas =
-      comprador.boletas ||
-      [];
-
-    const numeros =
-      boletas
-        .map(
-          boleta =>
-            boleta.numero
-        )
-        .join(", ");
-
-    const boletasPendientes =
-      boletas.filter(
-        boleta =>
-          !boleta.pagado
-      );
-
-    const valorPendiente =
-      boletasPendientes.reduce(
-        (
-          total,
-          boleta
-        ) =>
-          total +
-          Number(
-            boleta.valor ||
-            0
-          ),
-        0
-      );
-
-    const todasPagadas =
-      boletas.length >
-        0 &&
-      boletas.every(
-        boleta =>
-          boleta.pagado
-      );
-
-    let mensaje = "";
-
-    if (todasPagadas) {
-      mensaje =
-`Hola ${comprador.nombre}
-
-Ya falta muy poco para el sorteo.
-
-Tus boletas están pagadas y listas para participar.
-
-Tus números son: ${numeros}
-
-Puedes consultar el estado de la rifa y ver el resultado cuando se publique en:
-
-${PAGINA_RIFA}
-
-Muchas gracias por participar y mucha suerte con tus números.`;
-    } else {
-      const numerosPendientes =
-        boletasPendientes
-          .map(
-            boleta =>
-              boleta.numero
-          )
-          .join(", ");
-
-      mensaje =
-`Hola ${comprador.nombre}
-
-Se acerca el día de la rifa.
-
-Recuerda que para participar en el sorteo tus boletas deben estar pagadas.
-
-Actualmente tienes ${boletasPendientes.length} boleta(s) pendiente(s).
-
-Número(s) pendiente(s): ${numerosPendientes}
-
-Valor pendiente por pagar: ${dinero(valorPendiente)}
-
-Puedes realizar el pago por Llave a cualquiera de estas opciones:
-
-Llave: ${LLAVE_PAGO}
-Número: ${NUMERO_PAGO}
-
-Cuando realices el pago, responde este mensaje con el comprobante para actualizar tus boletas como pagadas.
-
-Puedes consultar el estado de la rifa y posteriormente el resultado en:
-
-${PAGINA_RIFA}
-
-Muchas gracias por participar y mucha suerte.`;
-    }
-
-    if (!telefono) {
-      alert(
-        "El comprador no tiene un teléfono válido."
-      );
-
-      return;
-    }
-
-    window.open(
-      `https://wa.me/${telefono}?text=${encodeURIComponent(
-        mensaje
-      )}`,
-      "_blank"
+        body:
+          JSON.stringify({
+            nombre,
+            telefono,
+            observacion
+          })
+      }
     );
-  };
 
-window.eliminarComprador =
-  async function(id) {
-    const comprador =
-      datosAdmin
-        .compradores
-        .find(
-          comprador =>
-            String(
-              comprador.id
-            ) ===
-            String(id)
-        );
-
-    if (!comprador) {
-      return;
-    }
-
-    const confirmar =
-      confirm(
-        `¿Eliminar a ${comprador.nombre} y liberar sus números?`
-      );
-
-    if (!confirmar) {
-      return;
-    }
-
-    try {
-      await api(
-        `/api/admin/compradores/${id}`,
-        {
-          method:
-            "DELETE"
-        }
-      );
-
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
+    await recargarTodo();
   };
 
 // ==========================================
-// MENSAJES MASIVOS
+// GENERAR MENSAJES
 // ==========================================
 
 function crearMensajePendiente(
@@ -1542,7 +1261,7 @@ function crearMensajePendiente(
       )
       .join(", ");
 
-  const valorPendiente =
+  const valor =
     pendientes
       .reduce(
         (
@@ -1567,7 +1286,7 @@ Actualmente tienes ${pendientes.length} boleta(s) pendiente(s).
 
 Número(s) pendiente(s): ${numeros}
 
-Valor pendiente por pagar: ${dinero(valorPendiente)}
+Valor pendiente por pagar: ${dinero(valor)}
 
 Puedes realizar el pago por Llave a cualquiera de estas opciones:
 
@@ -1609,11 +1328,67 @@ ${PAGINA_RIFA}
 Muchas gracias por participar y mucha suerte con tus números.`;
 }
 
+// ==========================================
+// WHATSAPP INDIVIDUAL
+// ==========================================
+
+window.contactarComprador =
+  function(id) {
+    const comprador =
+      compradoresConBoletas()
+        .find(
+          comprador =>
+            String(
+              comprador.id
+            ) ===
+            String(id)
+        );
+
+    if (!comprador) {
+      return;
+    }
+
+    const tienePendientes =
+      comprador.boletas
+        .some(
+          boleta =>
+            !boleta.pagado
+        );
+
+    const mensaje =
+      tienePendientes
+        ? crearMensajePendiente(
+            comprador
+          )
+        : crearMensajePagado(
+            comprador
+          );
+
+    const telefono =
+      telefonoWhatsApp(
+        comprador.telefono
+      );
+
+    window.open(
+      `https://wa.me/${telefono}?text=${encodeURIComponent(
+        mensaje
+      )}`,
+      "_blank"
+    );
+  };
+
+// ==========================================
+// MASIVO - PREPARAR TODOS
+// ==========================================
+
 function prepararMasivo(
   tipo
 ) {
   const compradores =
     compradoresConBoletas();
+
+  tipoMasivoActual =
+    tipo;
 
   if (
     tipo ===
@@ -1623,8 +1398,7 @@ function prepararMasivo(
       compradores
         .filter(
           comprador =>
-            comprador
-              .boletas
+            comprador.boletas
               .some(
                 boleta =>
                   !boleta.pagado
@@ -1633,45 +1407,55 @@ function prepararMasivo(
         .map(
           comprador => ({
             comprador,
-            tipo:
-              "pendiente",
 
             mensaje:
               crearMensajePendiente(
                 comprador
-              )
+              ),
+
+            incluir:
+              true
           })
         );
 
     tituloMasivo.textContent =
-      "Notificar pagos pendientes";
+      "Revisar pendientes por pagar";
+
+    textoConfirmacionMasivo.textContent =
+      "Confirmo que revisé todos los mensajes de los pendientes por pagar.";
   } else {
     colaMasiva =
       compradores
         .filter(
           comprador =>
-            comprador.boletas.length >
+            comprador.boletas
+              .length >
               0 &&
-            comprador.boletas.every(
-              boleta =>
-                boleta.pagado
-            )
+            comprador.boletas
+              .every(
+                boleta =>
+                  boleta.pagado
+              )
         )
         .map(
           comprador => ({
             comprador,
-            tipo:
-              "pagado",
 
             mensaje:
               crearMensajePagado(
                 comprador
-              )
+              ),
+
+            incluir:
+              true
           })
         );
 
     tituloMasivo.textContent =
-      "Notificar compradores pagados";
+      "Revisar compradores pagados";
+
+    textoConfirmacionMasivo.textContent =
+      "Confirmo que revisé todos los mensajes de los compradores pagados.";
   }
 
   if (
@@ -1682,15 +1466,16 @@ function prepararMasivo(
       tipo ===
         "pendientes"
         ? "No hay compradores con pagos pendientes."
-        : "No hay compradores totalmente pagados."
+        : "No hay compradores pagados."
     );
 
     return;
   }
 
-  indiceMasivo = 0;
+  checkMensajesRevisados.checked =
+    false;
 
-  mostrarPersonaMasiva();
+  renderMensajesMasivos();
 
   modalMasivo
     .classList
@@ -1699,161 +1484,246 @@ function prepararMasivo(
     );
 }
 
-function mostrarPersonaMasiva() {
-  if (
-    colaMasiva.length ===
-    0
-  ) {
-    return;
-  }
+// ==========================================
+// RENDER TODOS LOS MENSAJES
+// ==========================================
 
-  if (
-    indiceMasivo < 0
-  ) {
-    indiceMasivo = 0;
-  }
+function renderMensajesMasivos() {
+  listaMensajesMasivos.innerHTML =
+    "";
 
-  if (
-    indiceMasivo >=
-    colaMasiva.length
-  ) {
-    indiceMasivo =
-      colaMasiva.length -
-      1;
-  }
+  resumenMasivo.textContent =
+    `Se encontraron ${colaMasiva.length} personas. Revisa todos los mensajes antes de continuar.`;
 
-  const actual =
-    colaMasiva[
-      indiceMasivo
-    ];
+  colaMasiva.forEach(
+    (
+      item,
+      indice
+    ) => {
+      const comprador =
+        item.comprador;
 
-  const comprador =
-    actual.comprador;
+      const pendientes =
+        comprador.boletas
+          .filter(
+            boleta =>
+              !boleta.pagado
+          );
 
-  const boletas =
-    comprador.boletas ||
-    [];
+      const numeros =
+        comprador.boletas
+          .map(
+            boleta =>
+              boleta.numero
+          )
+          .join(", ");
 
-  const todosNumeros =
-    boletas
-      .map(
-        boleta =>
-          boleta.numero
-      )
-      .join(", ");
+      const valorPendiente =
+        pendientes.reduce(
+          (
+            total,
+            boleta
+          ) =>
+            total +
+            Number(
+              boleta.valor ||
+              0
+            ),
+          0
+        );
 
-  const pendientes =
-    boletas
-      .filter(
-        boleta =>
-          !boleta.pagado
-      );
+      const card =
+        document.createElement(
+          "div"
+        );
 
-  const numerosPendientes =
-    pendientes
-      .map(
-        boleta =>
-          boleta.numero
-      )
-      .join(", ");
+      card.className =
+        "mensaje-masivo-card";
 
-  const valorPendiente =
-    pendientes
-      .reduce(
-        (
-          total,
-          boleta
-        ) =>
-          total +
-          Number(
-            boleta.valor ||
-            0
-          ),
-        0
-      );
+      card.dataset.indice =
+        indice;
 
-  progresoMasivo.textContent =
-    `Mensaje ${indiceMasivo + 1} de ${colaMasiva.length}`;
+      card.innerHTML = `
+        <div class="mensaje-masivo-superior">
 
-  if (
-    pendientes.length >
-    0
-  ) {
-    datosMasivo.innerHTML = `
-      <p>
-        <strong>Nombre:</strong>
-        ${comprador.nombre}
-      </p>
+          <div class="mensaje-masivo-info">
 
-      <p>
-        <strong>WhatsApp:</strong>
-        ${comprador.telefono}
-      </p>
+            <h3>
+              ${indice + 1}. ${comprador.nombre}
+            </h3>
 
-      <p>
-        <strong>Todos sus números:</strong>
-        ${todosNumeros}
-      </p>
+            <p>
+              WhatsApp:
+              ${comprador.telefono}
+            </p>
 
-      <p class="dato-pendiente">
-        <strong>Números pendientes:</strong>
-        ${numerosPendientes}
-      </p>
+            <p>
+              Número(s):
+              ${numeros}
+            </p>
 
-      <p class="dato-pendiente">
-        <strong>Boletas pendientes:</strong>
-        ${pendientes.length}
-      </p>
+            ${
+              pendientes.length >
+              0
+                ? `
+                  <div class="mensaje-masivo-extra">
 
-      <p class="dato-pendiente">
-        <strong>Valor pendiente:</strong>
-        ${dinero(
-          valorPendiente
-        )}
-      </p>
-    `;
-  } else {
-    datosMasivo.innerHTML = `
-      <p>
-        <strong>Nombre:</strong>
-        ${comprador.nombre}
-      </p>
+                    <strong>
+                      Pendiente:
+                    </strong>
 
-      <p>
-        <strong>WhatsApp:</strong>
-        ${comprador.telefono}
-      </p>
+                    ${pendientes.length}
+                    boleta(s) ·
+                    ${dinero(
+                      valorPendiente
+                    )}
 
-      <p>
-        <strong>Números:</strong>
-        ${todosNumeros}
-      </p>
+                  </div>
+                `
+                : `
+                  <div class="mensaje-masivo-extra">
 
-      <p class="dato-pagado">
-        <strong>Estado:</strong>
-        Todo pagado
-      </p>
-    `;
-  }
+                    <strong>
+                      Estado:
+                    </strong>
 
-  mensajeMasivo.value =
-    actual.mensaje;
+                    Todo pagado
 
-  checkMensajeRevisado.checked =
-    false;
+                  </div>
+                `
+            }
 
-  btnAbrirWhatsAppMasivo.disabled =
-    false;
+          </div>
 
-  btnAnteriorMasivo.disabled =
-    indiceMasivo ===
-    0;
+          <label class="excluir-destinatario">
 
-  btnSiguienteMasivo.disabled =
-    indiceMasivo ===
-    colaMasiva.length -
-    1;
+            <input
+              type="checkbox"
+              class="check-incluir-masivo"
+              data-indice="${indice}"
+              checked
+            >
+
+            Incluir
+
+          </label>
+
+        </div>
+
+        <label>
+          Mensaje
+        </label>
+
+        <textarea
+          class="texto-mensaje-masivo"
+          data-indice="${indice}"
+          rows="12"
+        ></textarea>
+      `;
+
+      listaMensajesMasivos
+        .appendChild(
+          card
+        );
+
+      card
+        .querySelector(
+          ".texto-mensaje-masivo"
+        )
+        .value =
+          item.mensaje;
+    }
+  );
+
+  document
+    .querySelectorAll(
+      ".check-incluir-masivo"
+    )
+    .forEach(
+      check => {
+        check.addEventListener(
+          "change",
+          event => {
+            const indice =
+              Number(
+                event.target.dataset.indice
+              );
+
+            colaMasiva[
+              indice
+            ].incluir =
+              event.target.checked;
+
+            const card =
+              event.target.closest(
+                ".mensaje-masivo-card"
+              );
+
+            card.classList.toggle(
+              "excluido",
+              !event.target.checked
+            );
+
+            checkMensajesRevisados.checked =
+              false;
+
+            actualizarResumenMasivo();
+          }
+        );
+      }
+    );
+
+  document
+    .querySelectorAll(
+      ".texto-mensaje-masivo"
+    )
+    .forEach(
+      textarea => {
+        textarea.addEventListener(
+          "input",
+          event => {
+            const indice =
+              Number(
+                event.target.dataset.indice
+              );
+
+            colaMasiva[
+              indice
+            ].mensaje =
+              event.target.value;
+
+            checkMensajesRevisados.checked =
+              false;
+          }
+        );
+      }
+    );
+
+  actualizarResumenMasivo();
 }
+
+// ==========================================
+// RESUMEN MASIVO
+// ==========================================
+
+function actualizarResumenMasivo() {
+  const seleccionados =
+    colaMasiva.filter(
+      item =>
+        item.incluir
+    );
+
+  const excluidos =
+    colaMasiva.length -
+    seleccionados.length;
+
+  resumenSeleccionados.textContent =
+    `${seleccionados.length} mensajes serán abiertos en WhatsApp. ${excluidos} excluido(s).`;
+}
+
+// ==========================================
+// BOTONES MASIVOS
+// ==========================================
 
 document
   .getElementById(
@@ -1881,91 +1751,39 @@ document
     }
   );
 
-btnAnteriorMasivo
+// ==========================================
+// ABRIR TODOS LOS WHATSAPP
+// ==========================================
+
+document
+  .getElementById(
+    "btnAbrirTodosWhatsApp"
+  )
   .addEventListener(
     "click",
     () => {
+      const seleccionados =
+        colaMasiva.filter(
+          item =>
+            item.incluir
+        );
+
       if (
-        indiceMasivo >
+        seleccionados.length ===
         0
       ) {
-        indiceMasivo--;
-
-        mostrarPersonaMasiva();
-      }
-    }
-  );
-
-btnSiguienteMasivo
-  .addEventListener(
-    "click",
-    () => {
-      if (
-        indiceMasivo <
-        colaMasiva.length -
-          1
-      ) {
-        indiceMasivo++;
-
-        mostrarPersonaMasiva();
-      }
-    }
-  );
-
-btnAbrirWhatsAppMasivo
-  .addEventListener(
-    "click",
-    () => {
-      if (
-        colaMasiva.length ===
-        0
-      ) {
-        return;
-      }
-
-      const actual =
-        colaMasiva[
-          indiceMasivo
-        ];
-
-      const comprador =
-        actual.comprador;
-
-      const telefono =
-        telefonoWhatsApp(
-          comprador.telefono
-        );
-
-      const mensaje =
-        mensajeMasivo
-          .value
-          .trim();
-
-      if (
-        !checkMensajeRevisado.checked
-      ) {
         alert(
-          "Primero debes marcar la casilla confirmando que revisaste los datos y el mensaje."
+          "No hay destinatarios seleccionados."
         );
 
         return;
       }
 
       if (
-        !telefono ||
-        telefono.length <
-          10
+        !checkMensajesRevisados.checked
       ) {
         alert(
-          "El teléfono de este comprador parece incorrecto. Revísalo antes de continuar."
-        );
-
-        return;
-      }
-
-      if (!mensaje) {
-        alert(
-          "El mensaje está vacío."
+          "Primero debes confirmar que revisaste todos los mensajes."
         );
 
         return;
@@ -1975,28 +1793,88 @@ btnAbrirWhatsAppMasivo
         confirm(
 `ÚLTIMA CONFIRMACIÓN
 
-Nombre:
-${comprador.nombre}
+Vas a abrir ${seleccionados.length} conversaciones de WhatsApp.
 
-WhatsApp:
-${comprador.telefono}
+Tipo:
+${
+  tipoMasivoActual ===
+  "pendientes"
+    ? "Pendientes por pagar"
+    : "Compradores pagados"
+}
 
-Mensaje:
-${indiceMasivo + 1} de ${colaMasiva.length}
-
-¿Confirmas que revisaste los datos y deseas abrir WhatsApp?`
+¿Confirmas que revisaste todos los mensajes?`
         );
 
       if (!confirmar) {
         return;
       }
 
-      window.open(
-        `https://wa.me/${telefono}?text=${encodeURIComponent(
-          mensaje
-        )}`,
-        "_blank"
+      let abiertas = 0;
+      let bloqueadas = 0;
+      let invalidas = 0;
+
+      seleccionados.forEach(
+        item => {
+          const telefono =
+            telefonoWhatsApp(
+              item
+                .comprador
+                .telefono
+            );
+
+          if (
+            !telefono ||
+            telefono.length <
+              10
+          ) {
+            invalidas++;
+            return;
+          }
+
+          const url =
+            `https://wa.me/${telefono}?text=${encodeURIComponent(
+              item.mensaje
+            )}`;
+
+          const ventana =
+            window.open(
+              url,
+              "_blank"
+            );
+
+          if (ventana) {
+            abiertas++;
+          } else {
+            bloqueadas++;
+          }
+        }
       );
+
+      if (
+        bloqueadas >
+        0
+      ) {
+        alert(
+`Se intentaron abrir los mensajes.
+
+Abiertos: ${abiertas}
+Bloqueados por el navegador: ${bloqueadas}
+Teléfonos inválidos: ${invalidas}
+
+Permite las ventanas emergentes de esta página y vuelve a intentarlo para los que falten.`
+        );
+      } else {
+        alert(
+`Listo.
+
+Se abrieron ${abiertas} conversaciones de WhatsApp.
+
+Teléfonos inválidos: ${invalidas}
+
+Ahora solo debes revisar cada pestaña y pulsar Enviar en WhatsApp.`
+        );
+      }
     }
   );
 
@@ -2015,25 +1893,48 @@ document
     }
   );
 
-modalMasivo
-  .addEventListener(
-    "click",
-    event => {
-      if (
-        event.target ===
-        modalMasivo
-      ) {
-        modalMasivo
-          .classList
-          .add(
-            "oculto"
-          );
-      }
+// ==========================================
+// ELIMINAR COMPRADOR
+// ==========================================
+
+window.eliminarComprador =
+  async function(id) {
+    const comprador =
+      datosAdmin
+        .compradores
+        .find(
+          comprador =>
+            String(
+              comprador.id
+            ) ===
+            String(id)
+        );
+
+    if (!comprador) {
+      return;
     }
-  );
+
+    if (
+      !confirm(
+        `¿Eliminar a ${comprador.nombre} y liberar sus números?`
+      )
+    ) {
+      return;
+    }
+
+    await api(
+      `/api/admin/compradores/${id}`,
+      {
+        method:
+          "DELETE"
+      }
+    );
+
+    await recargarTodo();
+  };
 
 // ==========================================
-// HISTORIAL DE AYUDAS
+// AYUDAS
 // ==========================================
 
 function renderAyudas() {
@@ -2049,65 +1950,54 @@ function renderAyudas() {
     datosAdmin.ayudas.length ===
     0
   ) {
-    contenedor.innerHTML = `
-      <p class="texto-suave">
-        Todavía no hay ayudas registradas.
-      </p>
-    `;
+    contenedor.innerHTML =
+      `<p class="texto-suave">Todavía no hay ayudas registradas.</p>`;
 
     return;
   }
 
-  datosAdmin
-    .ayudas
-    .forEach(
-      ayuda => {
-        const item =
-          document.createElement(
-            "div"
-          );
+  datosAdmin.ayudas.forEach(
+    ayuda => {
+      const item =
+        document.createElement(
+          "div"
+        );
 
-        item.className =
-          "ayuda-item";
+      item.className =
+        "ayuda-item";
 
-        const fecha =
-          new Date(
-            ayuda.fecha_registro
-          ).toLocaleString(
-            "es-CO"
-          );
+      item.innerHTML = `
+        <div>
 
-        item.innerHTML = `
-          <div>
+          <strong>
+            ${dinero(
+              ayuda.valor
+            )}
+          </strong>
 
-            <strong>
-              ${dinero(
-                ayuda.valor
-              )}
-            </strong>
+          <small>
+            ${new Date(
+              ayuda.fecha_registro
+            ).toLocaleString(
+              "es-CO"
+            )}
+          </small>
 
-            <small>
-              ${fecha}
-            </small>
+        </div>
 
-          </div>
+        <button
+          class="btn-tabla btn-eliminar"
+          onclick="eliminarAyuda(${ayuda.id})"
+        >
+          Eliminar
+        </button>
+      `;
 
-          <button
-            class="btn-tabla btn-eliminar"
-            onclick="eliminarAyuda(
-              ${ayuda.id}
-            )"
-          >
-            Eliminar
-          </button>
-        `;
-
-        contenedor
-          .appendChild(
-            item
-          );
-      }
-    );
+      contenedor.appendChild(
+        item
+      );
+    }
+  );
 }
 
 window.eliminarAyuda =
@@ -2120,21 +2010,15 @@ window.eliminarAyuda =
       return;
     }
 
-    try {
-      await api(
-        `/api/admin/ayudas/${id}`,
-        {
-          method:
-            "DELETE"
-        }
-      );
+    await api(
+      `/api/admin/ayudas/${id}`,
+      {
+        method:
+          "DELETE"
+      }
+    );
 
-      await recargarTodo();
-    } catch (error) {
-      alert(
-        error.message
-      );
-    }
+    await recargarTodo();
   };
 
 // ==========================================
@@ -2155,43 +2039,32 @@ document
           "resultadoManual"
         );
 
-      const confirmar =
-        confirm(
-          `¿Seguro que deseas registrar ${input.value} como resultado de la rifa?`
-        );
-
-      if (!confirmar) {
+      if (
+        !confirm(
+          `¿Registrar ${input.value} como resultado?`
+        )
+      ) {
         return;
       }
 
-      try {
-        await api(
-          "/api/admin/resultado",
-          {
-            method:
-              "POST",
+      await api(
+        "/api/admin/resultado",
+        {
+          method:
+            "POST",
 
-            body:
-              JSON.stringify({
-                numero:
-                  input.value
-              })
-          }
-        );
+          body:
+            JSON.stringify({
+              numero:
+                input.value
+            })
+        }
+      );
 
-        input.value =
-          "";
+      input.value =
+        "";
 
-        await recargarTodo();
-
-        alert(
-          "Resultado guardado. Revisa cuidadosamente los datos del ganador antes de notificar."
-        );
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
+      await recargarTodo();
     }
   );
 
@@ -2335,12 +2208,12 @@ function renderGanadorAdmin() {
       </p>
 
       <p>
-        Estado de la boleta:
+        Estado:
         <strong>
           ${
             boleta.pagado
               ? "Pagada"
-              : "Pendiente de pago"
+              : "Pendiente"
           }
         </strong>
       </p>
@@ -2357,7 +2230,7 @@ function renderGanadorAdmin() {
       </button>
 
       <button
-        class="btn-principal btn-notificar"
+        class="btn-principal"
         onclick="abrirConfirmacionGanador()"
       >
         Notificar ganador
@@ -2373,32 +2246,12 @@ function renderGanadorAdmin() {
     );
 }
 
-// ==========================================
-// MODAL GANADOR
-// ==========================================
-
 window.abrirConfirmacionGanador =
   function() {
-    if (!datosAdmin) {
-      return;
-    }
-
     selectorGanador.innerHTML =
       "";
 
-    const boletasOrdenadas =
-      [...datosAdmin.boletas]
-        .sort(
-          (a, b) =>
-            Number(
-              a.numero
-            ) -
-            Number(
-              b.numero
-            )
-        );
-
-    boletasOrdenadas
+    datosAdmin.boletas
       .forEach(
         boleta => {
           const comprador =
@@ -2418,40 +2271,22 @@ window.abrirConfirmacionGanador =
             return;
           }
 
-          const opcion =
-            document.createElement(
-              "option"
-            );
-
-          opcion.value =
-            boleta.numero;
-
-          opcion.textContent =
-            `${boleta.numero} — ${comprador.nombre}`;
-
-          selectorGanador
-            .appendChild(
-              opcion
-            );
+          selectorGanador.innerHTML +=
+            `<option value="${boleta.numero}">
+              ${boleta.numero} — ${comprador.nombre}
+            </option>`;
         }
       );
 
-    const numeroActual =
+    if (
       datosAdmin
         .rifa
-        .numero_ganador;
-
-    if (
-      numeroActual &&
-      [...selectorGanador.options]
-        .some(
-          opcion =>
-            opcion.value ===
-            numeroActual
-        )
+        .numero_ganador
     ) {
       selectorGanador.value =
-        numeroActual;
+        datosAdmin
+          .rifa
+          .numero_ganador;
     }
 
     checkConfirmarGanador.checked =
@@ -2470,34 +2305,20 @@ function actualizarDatosConfirmacionGanador() {
   const numero =
     selectorGanador.value;
 
-  const datosGanador =
+  const datos =
     obtenerCompradorPorNumero(
       numero
     );
 
-  if (!datosGanador) {
-    nombreGanadorConfirmacion.value =
-      "";
-
-    telefonoGanadorConfirmacion.value =
-      "";
-
-    mensajeGanadorConfirmacion.value =
-      "";
-
+  if (!datos) {
     return;
   }
 
-  const {
-    comprador
-  } =
-    datosGanador;
-
   nombreGanadorConfirmacion.value =
-    comprador.nombre;
+    datos.comprador.nombre;
 
   telefonoGanadorConfirmacion.value =
-    comprador.telefono;
+    datos.comprador.telefono;
 
   premioGanadorConfirmacion.value =
     dinero(
@@ -2505,7 +2326,7 @@ function actualizarDatosConfirmacionGanador() {
     );
 
   mensajeGanadorConfirmacion.value =
-`Felicitaciones, ${comprador.nombre}
+`Felicitaciones, ${datos.comprador.nombre}
 
 Has sido el ganador de nuestra Gran Rifa con el número ${numero}.
 
@@ -2513,23 +2334,95 @@ Tu premio es de ${dinero(
   datosAdmin.rifa.premio
 )}.
 
-Muchas gracias por participar y nuevamente te felicitamos por haber ganado.
-
-Puedes consultar el resultado de la rifa aquí:
+Puedes consultar el resultado aquí:
 
 ${PAGINA_RIFA}
 
 Responde este mensaje o escríbenos al ${TELEFONO_RIFA} para coordinar la entrega de tu premio.`;
 }
 
-selectorGanador
-  .addEventListener(
-    "change",
-    () => {
-      checkConfirmarGanador.checked =
-        false;
+selectorGanador.addEventListener(
+  "change",
+  () => {
+    checkConfirmarGanador.checked =
+      false;
 
-      actualizarDatosConfirmacionGanador();
+    actualizarDatosConfirmacionGanador();
+  }
+);
+
+document
+  .getElementById(
+    "btnGuardarGanador"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+      if (
+        !checkConfirmarGanador.checked
+      ) {
+        alert(
+          "Confirma que revisaste los datos."
+        );
+
+        return;
+      }
+
+      await api(
+        "/api/admin/resultado",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+              numero:
+                selectorGanador.value
+            })
+        }
+      );
+
+      await recargarTodo();
+
+      modalConfirmarGanador
+        .classList
+        .add(
+          "oculto"
+        );
+    }
+  );
+
+document
+  .getElementById(
+    "btnNotificarGanador"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+      if (
+        !checkConfirmarGanador.checked
+      ) {
+        alert(
+          "Confirma que revisaste los datos."
+        );
+
+        return;
+      }
+
+      const telefono =
+        telefonoWhatsApp(
+          telefonoGanadorConfirmacion.value
+        );
+
+      const mensaje =
+        mensajeGanadorConfirmacion.value;
+
+      window.open(
+        `https://wa.me/${telefono}?text=${encodeURIComponent(
+          mensaje
+        )}`,
+        "_blank"
+      );
     }
   );
 
@@ -2547,270 +2440,6 @@ document
         );
     }
   );
-
-modalConfirmarGanador
-  .addEventListener(
-    "click",
-    event => {
-      if (
-        event.target ===
-        modalConfirmarGanador
-      ) {
-        modalConfirmarGanador
-          .classList
-          .add(
-            "oculto"
-          );
-      }
-    }
-  );
-
-// ==========================================
-// GUARDAR GANADOR
-// ==========================================
-
-document
-  .getElementById(
-    "btnGuardarGanador"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-      const numero =
-        selectorGanador.value;
-
-      if (!numero) {
-        alert(
-          "Selecciona un número ganador."
-        );
-
-        return;
-      }
-
-      if (
-        !checkConfirmarGanador.checked
-      ) {
-        alert(
-          "Debes confirmar que revisaste los datos del ganador."
-        );
-
-        return;
-      }
-
-      const datosGanador =
-        obtenerCompradorPorNumero(
-          numero
-        );
-
-      if (!datosGanador) {
-        alert(
-          "El número seleccionado no pertenece a ningún comprador."
-        );
-
-        return;
-      }
-
-      const confirmar =
-        confirm(
-`Vas a guardar el número ${numero} como ganador.
-
-Ganador:
-${datosGanador.comprador.nombre}
-
-Teléfono:
-${telefonoGanadorConfirmacion.value}
-
-¿Confirmas que los datos son correctos?`
-        );
-
-      if (!confirmar) {
-        return;
-      }
-
-      try {
-        await api(
-          "/api/admin/resultado",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                numero
-              })
-          }
-        );
-
-        await recargarTodo();
-
-        modalConfirmarGanador
-          .classList
-          .add(
-            "oculto"
-          );
-
-        alert(
-          "Ganador confirmado correctamente."
-        );
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
-    }
-  );
-
-// ==========================================
-// NOTIFICAR GANADOR
-// ==========================================
-
-document
-  .getElementById(
-    "btnNotificarGanador"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-      const numero =
-        selectorGanador.value;
-
-      const datosGanador =
-        obtenerCompradorPorNumero(
-          numero
-        );
-
-      if (!datosGanador) {
-        alert(
-          "No se encontró un comprador asociado al número seleccionado."
-        );
-
-        return;
-      }
-
-      const nombre =
-        datosGanador
-          .comprador
-          .nombre;
-
-      const telefonoIngresado =
-        telefonoGanadorConfirmacion
-          .value
-          .trim();
-
-      if (!telefonoIngresado) {
-        alert(
-          "Revisa el teléfono del ganador."
-        );
-
-        return;
-      }
-
-      if (
-        !checkConfirmarGanador.checked
-      ) {
-        alert(
-          "Debes marcar la casilla confirmando que revisaste los datos."
-        );
-
-        return;
-      }
-
-      const telefono =
-        telefonoWhatsApp(
-          telefonoIngresado
-        );
-
-      if (
-        telefono.length <
-        10
-      ) {
-        alert(
-          "El número de teléfono parece incorrecto."
-        );
-
-        return;
-      }
-
-      const mensaje =
-        mensajeGanadorConfirmacion
-          .value
-          .trim();
-
-      if (!mensaje) {
-        alert(
-          "El mensaje está vacío."
-        );
-
-        return;
-      }
-
-      const confirmar =
-        confirm(
-`ÚLTIMA CONFIRMACIÓN
-
-Número ganador:
-${numero}
-
-Ganador:
-${nombre}
-
-WhatsApp:
-${telefonoIngresado}
-
-¿Deseas abrir WhatsApp para notificar al ganador?`
-        );
-
-      if (!confirmar) {
-        return;
-      }
-
-      try {
-        await api(
-          "/api/admin/resultado",
-          {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                numero
-              })
-          }
-        );
-
-        await recargarTodo();
-
-        window.open(
-          `https://wa.me/${telefono}?text=${encodeURIComponent(
-            mensaje
-          )}`,
-          "_blank"
-        );
-
-        modalConfirmarGanador
-          .classList
-          .add(
-            "oculto"
-          );
-      } catch (error) {
-        alert(
-          error.message
-        );
-      }
-    }
-  );
-
-// ==========================================
-// RECARGAR TODO
-// ==========================================
-
-async function recargarTodo() {
-  await cargarPublico();
-
-  if (esAdmin) {
-    await cargarAdmin();
-  }
-}
 
 // ==========================================
 // MODALES
@@ -2834,42 +2463,32 @@ document
     }
   );
 
-modalLogin
-  .addEventListener(
-    "click",
-    event => {
-      if (
-        event.target ===
-        modalLogin
-      ) {
-        modalLogin
-          .classList
-          .add(
-            "oculto"
-          );
-      }
-    }
-  );
-
 document
   .getElementById(
-    "modalNumero"
+    "cerrarMasivo"
   )
   .addEventListener(
     "click",
-    event => {
-      if (
-        event.target.id ===
-        "modalNumero"
-      ) {
-        event.currentTarget
-          .classList
-          .add(
-            "oculto"
-          );
-      }
+    () => {
+      modalMasivo
+        .classList
+        .add(
+          "oculto"
+        );
     }
   );
+
+// ==========================================
+// RECARGAR
+// ==========================================
+
+async function recargarTodo() {
+  await cargarPublico();
+
+  if (esAdmin) {
+    await cargarAdmin();
+  }
+}
 
 // ==========================================
 // INICIAR

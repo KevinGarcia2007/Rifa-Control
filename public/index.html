@@ -9,9 +9,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    Gran Rifa
-  </title>
+  <title>Gran Rifa</title>
 
   <link
     rel="stylesheet"
@@ -26,19 +24,15 @@
   <div class="header-contenido">
 
     <div>
-
       <span class="mini-titulo">
         GRAN RIFA
       </span>
 
-      <h1>
-        RifaControl
-      </h1>
+      <h1>RifaControl</h1>
 
       <p>
         Consulta números disponibles y toda la información del sorteo.
       </p>
-
     </div>
 
     <button
@@ -76,9 +70,7 @@
 
   <div class="fecha-sorteo">
 
-    <span>
-      SORTEO
-    </span>
+    <span>SORTEO</span>
 
     <strong id="fechaSorteo">
       31 de octubre de 2026
@@ -93,27 +85,19 @@
   <div class="precios">
 
     <div>
-
-      <small>
-        Número
-      </small>
+      <small>Número</small>
 
       <strong id="precioNormal">
         $15.000
       </strong>
-
     </div>
 
     <div>
-
-      <small>
-        Promoción
-      </small>
+      <small>Promoción</small>
 
       <strong id="precioOferta">
         2 x $20.000
       </strong>
-
     </div>
 
   </div>
@@ -191,7 +175,6 @@
   <div class="titulo-seccion">
 
     <div>
-
       <span class="etiqueta">
         DISPONIBILIDAD
       </span>
@@ -199,7 +182,6 @@
       <h2>
         Números de la rifa
       </h2>
-
     </div>
 
     <div class="leyenda">
@@ -279,9 +261,7 @@
 
 </section>
 
-<!-- ========================================= -->
-<!-- PANEL ADMINISTRADOR -->
-<!-- ========================================= -->
+<!-- PANEL ADMIN -->
 
 <section
   id="panelAdmin"
@@ -291,7 +271,6 @@
   <section class="admin-cabecera">
 
     <div>
-
       <span class="etiqueta">
         ADMINISTRACIÓN
       </span>
@@ -299,7 +278,6 @@
       <h2>
         Panel de encargados
       </h2>
-
     </div>
 
     <button
@@ -312,14 +290,13 @@
 
   </section>
 
-  <!-- REGISTRAR COMPRADOR -->
+  <!-- REGISTRAR -->
 
   <section class="card">
 
     <div class="titulo-seccion">
 
       <div>
-
         <span class="etiqueta">
           VENTA
         </span>
@@ -327,7 +304,6 @@
         <h2>
           Registrar comprador
         </h2>
-
       </div>
 
     </div>
@@ -523,8 +499,7 @@
         </h2>
 
         <p class="texto-suave">
-          Envía mensajes personalizados según el estado de pago.
-          Cada mensaje debe revisarse antes de abrir WhatsApp.
+          Revisa todos los mensajes antes de abrirlos en WhatsApp.
         </p>
 
       </div>
@@ -589,29 +564,12 @@
 
           <tr>
 
-            <th>
-              Número(s)
-            </th>
-
-            <th>
-              Nombre
-            </th>
-
-            <th>
-              Teléfono
-            </th>
-
-            <th>
-              Valor
-            </th>
-
-            <th>
-              Pago
-            </th>
-
-            <th>
-              Acciones
-            </th>
+            <th>Número(s)</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Valor</th>
+            <th>Pago</th>
+            <th>Acciones</th>
 
           </tr>
 
@@ -626,7 +584,7 @@
 
   </section>
 
-  <!-- HISTORIAL AYUDAS -->
+  <!-- AYUDAS -->
 
   <section class="card">
 
@@ -700,9 +658,7 @@
 
 </main>
 
-<!-- ========================================= -->
-<!-- MODAL LOGIN -->
-<!-- ========================================= -->
+<!-- LOGIN -->
 
 <div
   id="modalLogin"
@@ -774,9 +730,7 @@
 
 </div>
 
-<!-- ========================================= -->
-<!-- MODAL NÚMERO -->
-<!-- ========================================= -->
+<!-- MODAL NUMERO -->
 
 <div
   id="modalNumero"
@@ -800,9 +754,7 @@
 
 </div>
 
-<!-- ========================================= -->
 <!-- MODAL GANADOR -->
-<!-- ========================================= -->
 
 <div
   id="modalConfirmarGanador"
@@ -864,7 +816,7 @@
     <div class="campo-confirmacion">
 
       <label>
-        Teléfono para notificación
+        Teléfono
       </label>
 
       <input
@@ -911,8 +863,7 @@
         >
 
         <span>
-          Confirmo que revisé el número,
-          nombre y teléfono del ganador.
+          Confirmo que revisé los datos del ganador.
         </span>
 
       </label>
@@ -944,7 +895,7 @@
 </div>
 
 <!-- ========================================= -->
-<!-- MODAL MENSAJES MASIVOS -->
+<!-- MODAL MASIVO NUEVO -->
 <!-- ========================================= -->
 
 <div
@@ -963,39 +914,39 @@
     </button>
 
     <span class="etiqueta">
-      MENSAJES MASIVOS
+      ENVÍO MASIVO
     </span>
 
     <h2 id="tituloMasivo">
-      Notificaciones
+      Revisar mensajes
     </h2>
 
     <p
-      id="progresoMasivo"
+      id="resumenMasivo"
       class="texto-suave"
     >
     </p>
 
+    <div class="alerta-confirmacion">
+      Revisa todos los destinatarios y mensajes.
+      Puedes editar el texto o excluir a una persona
+      antes de abrir WhatsApp.
+    </div>
+
     <div
-      id="datosMasivo"
-      class="datos-masivo"
+      id="listaMensajesMasivos"
+      class="lista-mensajes-masivos"
     >
     </div>
 
-    <div class="campo-confirmacion">
+    <div class="resumen-envio-final">
 
-      <label for="mensajeMasivo">
-        Mensaje que se abrirá en WhatsApp
-      </label>
+      <strong>
+        Resumen final
+      </strong>
 
-      <textarea
-        id="mensajeMasivo"
-        rows="15"
-      ></textarea>
-
-      <small class="texto-ayuda">
-        Puedes corregir o modificar el mensaje antes de continuar.
-      </small>
+      <p id="resumenSeleccionados">
+      </p>
 
     </div>
 
@@ -1004,46 +955,25 @@
       <label class="opcion">
 
         <input
-          id="checkMensajeRevisado"
+          id="checkMensajesRevisados"
           type="checkbox"
         >
 
-        <span>
-          Confirmo que revisé el nombre,
-          números, valor pendiente y mensaje.
+        <span id="textoConfirmacionMasivo">
+          Confirmo que revisé todos los mensajes.
         </span>
 
       </label>
 
     </div>
 
-    <div class="botones-masivos">
-
-      <button
-        id="btnAnteriorMasivo"
-        class="btn-secundario"
-        type="button"
-      >
-        Anterior
-      </button>
-
-      <button
-        id="btnAbrirWhatsAppMasivo"
-        class="btn-principal"
-        type="button"
-      >
-        Abrir WhatsApp
-      </button>
-
-      <button
-        id="btnSiguienteMasivo"
-        class="btn-secundario"
-        type="button"
-      >
-        Siguiente
-      </button>
-
-    </div>
+    <button
+      id="btnAbrirTodosWhatsApp"
+      class="btn-principal btn-abrir-todos"
+      type="button"
+    >
+      Abrir todos en WhatsApp
+    </button>
 
   </div>
 
