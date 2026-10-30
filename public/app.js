@@ -749,36 +749,124 @@ window.editarComprador = async function (id) {
 // WHATSAPP COMPRADOR
 // ==========================================
 
-window.contactarComprador = function (id) {
-  const comprador = compradoresConBoletas().find(
-    (comprador) => comprador.id === id,
-  );
+window.contactarComprador =
+  function(id) {
+    const comprador =
+      compradoresConBoletas()
+        .find(
+          comprador =>
+            comprador.id === id
+        );
 
-  if (!comprador) {
-    return;
-  }
+    if (!comprador) {
+      return;
+    }
 
-  const numeros = comprador.boletas.map((boleta) => boleta.numero).join(", ");
+    const telefono =
+      telefonoWhatsApp(
+        comprador.telefono
+      );
 
-  const telefono = telefonoWhatsApp(comprador.telefono);
+    const boletas =
+      comprador.boletas || [];
 
-  const mensaje = `Hola ${comprador.nombre}
+    const numeros =
+      boletas
+        .map(
+          boleta =>
+            boleta.numero
+        )
+        .join(", ");
 
-Gracias por participar en nuestra rifa.
+    const boletasPendientes =
+      boletas.filter(
+        boleta =>
+          !boleta.pagado
+      );
 
-Tu número registrado es: ${numeros}
+    const cantidadPendientes =
+      boletasPendientes.length;
 
-Puedes hacer seguimiento a la rifa, consultar los números disponibles y ver el resultado cuando se publique en el siguiente enlace:
+    const valorPendiente =
+      boletasPendientes.reduce(
+        (
+          total,
+          boleta
+        ) =>
+          total +
+          Number(
+            boleta.valor || 0
+          ),
+        0
+      );
+
+    const todasPagadas =
+      boletas.length > 0 &&
+      boletas.every(
+        boleta =>
+          boleta.pagado
+      );
+
+    let mensaje = "";
+
+    if (todasPagadas) {
+      mensaje =
+`Hola ${comprador.nombre}
+
+¡Ya falta muy poco para el sorteo!
+
+Tus boletas están pagadas y listas para participar.
+
+Tus números son: ${numeros}
+
+Cuando se publique el resultado podrás consultarlo directamente en:
 
 ${PAGINA_RIFA}
 
-Muchas gracias por participar.`;
+Muchas gracias por participar y mucha suerte con tus números.`;
+    } else {
+      const numerosPendientes =
+        boletasPendientes
+          .map(
+            boleta =>
+              boleta.numero
+          )
+          .join(", ");
 
-  window.open(
-    `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`,
-    "_blank",
-  );
-};
+      mensaje =
+`Hola ${comprador.nombre}
+
+¡Se acerca el día de la rifa!
+
+Recuerda que para participar en el sorteo tus boletas deben estar pagadas.
+
+Actualmente tienes ${cantidadPendientes} boleta(s) pendiente(s).
+
+Número(s) pendiente(s): ${numerosPendientes}
+
+Valor pendiente por pagar: ${dinero(valorPendiente)}
+
+Puedes realizar el pago por Llave a cualquiera de estas opciones:
+
+Llave: @QRW940
+Número: 1032940369
+
+Cuando realices el pago, respóndeme este mensaje con el comprobante para actualizar tus boletas como pagadas.
+
+Puedes consultar el estado de la rifa y posteriormente el resultado en:
+
+${PAGINA_RIFA}
+
+Muchas gracias por participar y mucha suerte.`;
+    }
+
+    window.open(
+      `https://wa.me/${telefono}?text=${encodeURIComponent(
+        mensaje
+      )}`,
+      "_blank"
+    );
+  };
 
 window.eliminarComprador = async function (id) {
   const comprador = datosAdmin.compradores.find(
